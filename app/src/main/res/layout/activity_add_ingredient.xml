@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".editing.AddIngredientActivity">
+
+    <EditText
+        android:id="@+id/et_ingredient_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="24sp"
+        android:hint="Ingredient name..."
+        app:layout_constraintStart_toStartOf="@+id/tv_ingredient_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ingredient_name"
+        tools:text="Farina W260" />
+
+    <EditText
+        android:id="@+id/et_ingredient_percent"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_ingredient_percent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ingredient_percent"
+        tools:text="100" />
+
+    <TextView
+        android:id="@+id/tv_ingredient_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="36dp"
+        android:text="Ingredient Name"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_ingredient_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Percent"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/et_ingredient_name"
+        app:layout_constraintTop_toBottomOf="@+id/et_ingredient_name" />
+
+    <TextView
+        android:id="@+id/tv_percent_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="%"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_ingredient_percent"
+        app:layout_constraintStart_toEndOf="@+id/et_ingredient_percent"
+        app:layout_constraintTop_toTopOf="@+id/et_ingredient_percent" />
+
+    <Button
+        android:id="@+id/btn_add_ingredient"
+        android:layout_width="174dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="8dp"
+        android:text="Add Ingredient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_ingredient_percent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

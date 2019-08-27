@@ -1,0 +1,73 @@
+package com.francescoalessi.recipes.data;
+
+import android.content.Context;
+import android.os.AsyncTask;
+
+import androidx.annotation.NonNull;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
+@Database(entities = {Recipe.class, Ingredient.class}, version = 3, exportSchema = false) // set exportSchema to true later in development
+public abstract class RecipeRoomDatabase extends RoomDatabase
+{
+    public abstract RecipeDao recipeDao();
+
+    private static volatile RecipeRoomDatabase INSTANCE;
+
+    static RecipeRoomDatabase getDatabase(final Context context)
+    {
+        if(INSTANCE == null)
+        {
+            synchronized (RecipeRoomDatabase.class)
+            {
+                if(INSTANCE == null)
+                {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                            RecipeRoomDatabase.class, "recipe_database").
+                            addCallback(sRoomDatabaseCallback).
+                            fallbackToDestructiveMigration().build(); // remove destructive migration eventually
+                }
+            }
+        }
+
+        return INSTANCE;
+    }
+
+    private static RoomDatabase.Callback sRoomDatabaseCallback =
+            new RoomDatabase.Callback(){
+
+                @Override
+                public void onCreate (@NonNull SupportSQLiteDatabase db){
+                    super.onCreate(db);
+                    new PopulateDbAsync(INSTANCE).execute();
+                }
+            };
+
+    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+
+        private final RecipeDao mDao;
+
+        PopulateDbAsync(RecipeRoomDatabase db) {
+            mDao = db.recipeDao();
+        }
+
+        @Override
+        protected Void doInBackground(final Void... params) {
+            Recipe word = new Recipe("Pizza a taglio");
+            mDao.insert(word);
+            word = new Recipe("Pizza col pollo");
+            mDao.insert(word);
+
+            Ingredient ingredient = new Ingredient(word.getId(), "test", 23);
+            mDao.insert(ingredient);
+            ingredient = new Ingredient(word.getId(), "test2", 1);
+            mDao.insert(ingredient);
+
+            return null;
+        }
+    }
+}
+
+
