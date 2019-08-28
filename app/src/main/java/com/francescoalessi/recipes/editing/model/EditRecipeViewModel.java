@@ -15,6 +15,7 @@ public class EditRecipeViewModel extends AndroidViewModel {
 
     private RecipeRepository mRepository;
     private LiveData<Recipe> mRecipe;
+    private LiveData<Ingredient> mIngredient;
     private LiveData<List<Ingredient>> mRecipeIngredients;
 
     public EditRecipeViewModel(Application application, int recipeId)
@@ -26,6 +27,8 @@ public class EditRecipeViewModel extends AndroidViewModel {
     }
 
     public LiveData<Recipe> getRecipeById() { return mRecipe; }
+
+    public LiveData<Ingredient> getIngredientById(int id) { return mRepository.getIngredientById(id); }
 
     public LiveData<List<Ingredient>> getRecipeIngredients() { return mRecipeIngredients; }
 
@@ -39,8 +42,18 @@ public class EditRecipeViewModel extends AndroidViewModel {
         mRepository.insert(ingredient);
     }
 
+    public void delete(Ingredient ingredient)
+    {
+        mRepository.delete(ingredient);
+    }
+
     public void update(Recipe recipe)
     {
         mRepository.update(recipe);
+    }
+
+    public void update(Ingredient ingredient)
+    {
+        mRepository.update(ingredient);
     }
 }

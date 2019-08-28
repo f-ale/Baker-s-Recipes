@@ -36,6 +36,9 @@ public interface RecipeDao {
     @Query("SELECT * from recipe_table WHERE id = :id")
     LiveData<Recipe> getRecipeById(int id);
 
+    @Query("SELECT * from ingredient_table WHERE id = :id")
+    LiveData<Ingredient> getIngredientById(int id);
+
     @Query("DELETE FROM recipe_table")
     void deleteAll();
 

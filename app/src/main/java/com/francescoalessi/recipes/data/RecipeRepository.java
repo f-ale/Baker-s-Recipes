@@ -29,6 +29,8 @@ public class RecipeRepository {
 
     public LiveData<Recipe> getRecipeById(int id) { return mRecipeDao.getRecipeById(id); }
 
+    public LiveData<Ingredient> getIngredientById(int id) { return mRecipeDao.getIngredientById(id); }
+
     public void insert (Recipe recipe) {
         new insertAsyncTask(mRecipeDao).execute(recipe);
     }
@@ -37,8 +39,16 @@ public class RecipeRepository {
         new updateAsyncTask(mRecipeDao).execute(recipe);
     }
 
+    public void update (Ingredient ingredient) {
+        new updateIngredientAsyncTask(mRecipeDao).execute(ingredient);
+    }
+
     public void delete (Recipe recipe)  {
         new deleteAsyncTask(mRecipeDao).execute(recipe);
+    }
+
+    public void delete (Ingredient ingredient)  {
+        new deleteIngredientAsyncTask(mRecipeDao).execute(ingredient);
     }
 
     public void insert (Ingredient ingredient) {
@@ -94,6 +104,23 @@ public class RecipeRepository {
         }
     }
 
+    private static class updateIngredientAsyncTask
+            extends AsyncTask<Ingredient, Void, Void>
+    {
+        private RecipeDao mAsyncTaskDao;
+
+        updateIngredientAsyncTask(RecipeDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Ingredient... ingredients) {
+            int rows = mAsyncTaskDao.update(ingredients[0]);
+            Log.d("UPDATE", rows + "");
+            return null;
+        }
+    }
+
     private static class deleteAsyncTask
             extends AsyncTask<Recipe, Void, Void>
     {
@@ -106,6 +133,22 @@ public class RecipeRepository {
         @Override
         protected Void doInBackground(Recipe... recipes) {
             mAsyncTaskDao.delete(recipes[0]);
+            return null;
+        }
+    }
+
+    private static class deleteIngredientAsyncTask
+            extends AsyncTask<Ingredient, Void, Void>
+    {
+        private RecipeDao mAsyncTaskDao;
+
+        deleteIngredientAsyncTask(RecipeDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Ingredient... ingredients) {
+            mAsyncTaskDao.delete(ingredients[0]);
             return null;
         }
     }

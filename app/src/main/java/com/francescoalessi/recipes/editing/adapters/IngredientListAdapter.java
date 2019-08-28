@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.francescoalessi.recipes.MainActivity;
 import com.francescoalessi.recipes.R;
 import com.francescoalessi.recipes.data.Ingredient;
+import com.francescoalessi.recipes.editing.AddIngredientActivity;
 import com.francescoalessi.recipes.editing.EditRecipeActivity;
 
 import java.util.List;
@@ -70,6 +72,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     {
         public final TextView mIngredientNameTextView;
         public final TextView mIngredientPercentTextView;
+        public final Button mEditIngredientButton;
 
             IngredientListAdapter mAdapter;
 
@@ -80,25 +83,30 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
             mAdapter = adapter;
             mIngredientNameTextView = itemView.findViewById(R.id.tv_ingredient_list_name);
             mIngredientPercentTextView = itemView.findViewById(R.id.tv_ingredient_list_percent);
+            mEditIngredientButton = itemView.findViewById(R.id.btn_edit_ingredient_list);
 
-            itemView.setOnClickListener(this);
+            mEditIngredientButton.setOnClickListener(this);
         }
 
 
         @Override
         public void onClick(View view) {
 
-            // Edit ingredient
-
-            /*int position = getLayoutPosition();
+            int position = getLayoutPosition();
             Ingredient ingredient = mIngredientList.get(position);
             Context context = view.getContext();
 
-            //start intent
-            Intent intent = new Intent(context, EditRecipeActivity.class);
-            intent.putExtra(MainActivity.EXTRA_RECIPE_ID, ingredient.getId());
-            context.startActivity(intent);*/
+            if(view.getId() == R.id.btn_edit_ingredient_list)
+            {
+                editIngredient(ingredient, context);
+            }
+        }
 
+        private void editIngredient(Ingredient ingredient, Context context)
+        {
+            Intent intent = new Intent(context, AddIngredientActivity.class);
+            intent.putExtra(MainActivity.EXTRA_INGREDIENT_ID, ingredient.getId());
+            context.startActivity(intent);
         }
     }
 }

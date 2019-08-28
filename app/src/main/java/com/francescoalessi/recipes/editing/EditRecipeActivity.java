@@ -1,10 +1,12 @@
 package com.francescoalessi.recipes.editing;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,6 +70,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
 
             if (mRecipeId == -1)
             {
+                mNewIngredientButton.setVisibility(View.INVISIBLE);
                 setTitle("New Recipe");
                 mRecipeNameEditText.requestFocus();
             }
@@ -89,6 +92,22 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
                 });
             }
         }
+
+        ItemTouchHelper.SimpleCallback deleteRecipeCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getLayoutPosition();
+                Ingredient ingredient = mIngredientList.getValue().get(position);
+                mEditRecipeViewModel.delete(ingredient);
+            }
+        };
+
+        new ItemTouchHelper(deleteRecipeCallback).attachToRecyclerView(mIngredientsRecyclerView);
     }
 
     private void populateRecipeUI(Recipe recipe)
