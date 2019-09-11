@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.francescoalessi.recipes.MainActivity;
@@ -16,7 +17,6 @@ import com.francescoalessi.recipes.R;
 import com.francescoalessi.recipes.data.Ingredient;
 import com.francescoalessi.recipes.data.comparators.CompareIngredientPercent;
 import com.francescoalessi.recipes.editing.AddIngredientActivity;
-import com.francescoalessi.recipes.editing.EditRecipeActivity;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +34,24 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     {
         onInstantiate(context);
         this.editMode = editMode;
+    }
+
+    private float getPercentSum(List<Ingredient> ingredientList)
+    {
+        float percentSum = 0;
+
+        for (Ingredient ingredient : ingredientList)
+        {
+            percentSum += ingredient.getPercent();
+        }
+
+        return percentSum;
+    }
+
+    private float getIngredientWeight(float totalWeigth, float percentSum, Ingredient ingredient)
+    {
+        float weight = ((ingredient.getPercent() / percentSum) * totalWeigth);
+        return weight;
     }
 
     public IngredientListAdapter(Context context)
@@ -59,13 +77,26 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         {
             Ingredient mCurrent = mIngredientList.get(position);
             holder.mIngredientNameTextView.setText(mCurrent.getName());
+
             if(!calculateQuantities)
-                holder.mIngredientPercentTextView.setText(mCurrent.getPercent() + "%"); // TODO: change this to use String.format to parse float
+            {
+                float percent = mCurrent.getPercent();
+                if(percent == Math.round(percent))
+                    holder.mIngredientPercentTextView.setText(Math.round(percent) + "%"); // TODO: change this to use String.format to parse float
+                else
+                    holder.mIngredientPercentTextView.setText(percent + "%"); // TODO: change this to use String.format to parse float
+            }
+
             else
             {
-                mMaxIngredient = Collections.max(mIngredientList, new CompareIngredientPercent());
-                float percent = (totalWeigth * mCurrent.getPercent()) / 100; // TODO: Wrong formula, calculate weights properly
-                holder.mIngredientPercentTextView.setText(percent + "%");
+                float percentSum = getPercentSum(mIngredientList);
+
+                float weight = getIngredientWeight(totalWeigth, percentSum, mCurrent);
+
+                if(weight == Math.round(weight))
+                    holder.mIngredientPercentTextView.setText(Math.round(weight) + "g"); // TODO: change this to use String.format to parse float
+                else
+                    holder.mIngredientPercentTextView.setText(weight + "g"); // TODO: change this to use String.format to parse float
             }
         }
         else
@@ -108,7 +139,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     {
         public final TextView mIngredientNameTextView;
         public final TextView mIngredientPercentTextView;
-        public final Button mEditIngredientButton;
+        public final AppCompatImageButton mEditIngredientButton;
 
         IngredientListAdapter mAdapter;
 
