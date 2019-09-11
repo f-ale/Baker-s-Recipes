@@ -1,5 +1,6 @@
 package com.francescoalessi.recipes.editing;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,24 +45,50 @@ public class AddIngredientActivity extends AppCompatActivity implements View.OnC
         if(intent != null)
         {
             mRecipeId = intent.getIntExtra(MainActivity.EXTRA_RECIPE_ID, -1);
-
-            EditRecipeViewModelFactory factory = new EditRecipeViewModelFactory(this.getApplication(), mRecipeId);
-            mEditRecipeViewModel = ViewModelProviders.of(this, factory).get(EditRecipeViewModel.class);
-
             mIngredientId = intent.getIntExtra(MainActivity.EXTRA_INGREDIENT_ID, -1);
-            if(mIngredientId != -1)
-            {
-                LiveData<Ingredient> ingredient = mEditRecipeViewModel.getIngredientById(mIngredientId);
-                ingredient.observe(this, new Observer<Ingredient>() {
-                    @Override
-                    public void onChanged(Ingredient ingredient) {
-                        populateUI(ingredient);
-                        mIngredient = ingredient;
-                    }
-                });
-            }
         }
 
+        if(savedInstanceState != null && !savedInstanceState.isEmpty())
+        {
+            if(mRecipeId == -1)
+                mRecipeId = savedInstanceState.getInt(MainActivity.EXTRA_RECIPE_ID, -1);
+
+            if(mIngredientId == -1)
+                mIngredientId = savedInstanceState.getInt(MainActivity.EXTRA_INGREDIENT_ID, -1);
+        }
+
+        retrieveViewModel();
+        retrieveIngredientData(savedInstanceState);
+    }
+
+    private void retrieveViewModel()
+    {
+        EditRecipeViewModelFactory factory = new EditRecipeViewModelFactory(this.getApplication(), mRecipeId);
+        mEditRecipeViewModel = ViewModelProviders.of(this, factory).get(EditRecipeViewModel.class);
+    }
+
+    private void retrieveIngredientData(final Bundle savedInstanceState)
+    {
+        if(mIngredientId != -1)
+        {
+            LiveData<Ingredient> ingredient = mEditRecipeViewModel.getIngredientById(mIngredientId);
+            ingredient.observe(this, new Observer<Ingredient>() {
+                @Override
+                public void onChanged(Ingredient ingredient) {
+                    if(savedInstanceState == null || savedInstanceState.isEmpty())
+                        populateUI(ingredient);
+                    mIngredient = ingredient;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+
+        outState.putInt(MainActivity.EXTRA_INGREDIENT_ID, mIngredientId);
+        outState.putInt(MainActivity.EXTRA_RECIPE_ID, mRecipeId);
     }
 
     private void populateUI(Ingredient ingredient)

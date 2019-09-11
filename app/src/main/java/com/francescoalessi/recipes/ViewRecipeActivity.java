@@ -3,7 +3,6 @@ package com.francescoalessi.recipes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.SupportMenuInflater;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -14,17 +13,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.francescoalessi.recipes.data.Ingredient;
 import com.francescoalessi.recipes.data.Recipe;
@@ -32,7 +27,6 @@ import com.francescoalessi.recipes.editing.EditRecipeActivity;
 import com.francescoalessi.recipes.editing.adapters.IngredientListAdapter;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModel;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModelFactory;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -119,7 +113,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        if(mRecipeId == -1 && savedInstanceState != null && !savedInstanceState.isEmpty())
+        if(mRecipeId == -1 && !savedInstanceState.isEmpty())
         {
             mRecipeId = savedInstanceState.getInt(MainActivity.EXTRA_RECIPE_ID);
             setupUserInterface();
@@ -168,7 +162,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
                 if(mTotalWeightEditText.getText() != null)
                 {
                     String weightText = mTotalWeightEditText.getText().toString();
-                    if(weightText != null && !weightText.equals(""))
+                    if(!weightText.equals(""))
                     {
                         mAdapter.calculateQuantities(Float.parseFloat(weightText));
                     }
