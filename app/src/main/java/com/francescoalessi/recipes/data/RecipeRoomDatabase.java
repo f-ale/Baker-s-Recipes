@@ -9,7 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Recipe.class, Ingredient.class}, version = 3, exportSchema = false) // set exportSchema to true later in development
+@Database(entities = {Recipe.class, Ingredient.class}, version = 3, exportSchema = false) // TODO: set exportSchema to true later in development
 public abstract class RecipeRoomDatabase extends RoomDatabase
 {
     public abstract RecipeDao recipeDao();
@@ -27,7 +27,7 @@ public abstract class RecipeRoomDatabase extends RoomDatabase
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             RecipeRoomDatabase.class, "recipe_database").
                             addCallback(sRoomDatabaseCallback).
-                            fallbackToDestructiveMigration().build(); // remove destructive migration eventually
+                            fallbackToDestructiveMigration().build(); // TODO: remove destructive migration eventually
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.francescoalessi.recipes.editing;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -14,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +49,13 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recipe);
 
+        ActionBar actionBar = getSupportActionBar();
+
+        if(actionBar != null)
+        {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         mRecipeNameEditText = findViewById(R.id.et_recipe);
         mSaveRecipeButton = findViewById(R.id.btn_save_recipe);
         mSaveRecipeButton.setOnClickListener(this);
@@ -70,7 +79,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
 
             if (mRecipeId == -1)
             {
-                mNewIngredientButton.setVisibility(View.INVISIBLE);
+                mNewIngredientButton.setVisibility(View.GONE);
                 setTitle("New Recipe");
                 mRecipeNameEditText.requestFocus();
             }
@@ -122,12 +131,22 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        setResult(mRecipeId);
+        finish();
+        return true;
+    }
+
+    @Override
     public void onClick(View view) {
         if(view.getId() == R.id.btn_save_recipe)
         {
             Recipe recipe;
             if(mRecipeId != -1)
+            {
                 recipe = mRecipe.getValue();
+                setResult(mRecipeId);
+            }
             else
                 recipe = new Recipe("New Recipe");
 
@@ -138,6 +157,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
                 mEditRecipeViewModel.update(recipe);
             else
                 mEditRecipeViewModel.insert(recipe);
+
             finish();
         }
 

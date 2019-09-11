@@ -9,14 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".editing.AddIngredientActivity"></activity>
         <activity
-            android:name=".editing.EditRecipeActivity"
-            android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateVisible">
+            android:name=".editing.AddIngredientActivity"
+            android:parentActivityName=".editing.EditRecipeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.francescoalessi.recipes.MainActivity" />
+                android:value="com.francescoalessi.recipes.editing.EditRecipeActivity" />
+        </activity>
+        <activity
+            android:name=".editing.EditRecipeActivity"
+            android:windowSoftInputMode="stateVisible"
+            android:launchMode="singleTop">
         </activity>
         <activity
             android:name=".ViewRecipeActivity"
@@ -26,7 +29,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.francescoalessi.recipes.MainActivity" />
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

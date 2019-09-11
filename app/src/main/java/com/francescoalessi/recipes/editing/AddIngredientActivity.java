@@ -17,8 +17,6 @@ import com.francescoalessi.recipes.data.Ingredient;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModel;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModelFactory;
 
-import java.util.List;
-
 public class AddIngredientActivity extends AppCompatActivity implements View.OnClickListener {
 
     private int mRecipeId;
@@ -79,8 +77,8 @@ public class AddIngredientActivity extends AppCompatActivity implements View.OnC
             String name = mIngredientNameEditText.getText().toString();
             String percent = mIngredientPercentEditText.getText().toString();
 
-            Boolean hasName = !name.equals("") ;
-            Boolean hasPercent = !percent.equals("");
+            boolean hasName = !name.equals("");
+            boolean hasPercent = !percent.equals("");
             if(hasName && hasPercent && mIngredientId == -1)
             {
                 mEditRecipeViewModel.insert(new Ingredient(mRecipeId, name, Float.parseFloat(percent)));

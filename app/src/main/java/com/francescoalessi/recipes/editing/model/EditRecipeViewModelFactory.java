@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.francescoalessi.recipes.editing.model.EditRecipeViewModel;
-
 public class EditRecipeViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final Application application;

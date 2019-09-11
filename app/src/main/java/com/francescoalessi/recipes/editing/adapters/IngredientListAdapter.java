@@ -14,17 +14,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.francescoalessi.recipes.MainActivity;
 import com.francescoalessi.recipes.R;
 import com.francescoalessi.recipes.data.Ingredient;
+import com.francescoalessi.recipes.data.comparators.CompareIngredientPercent;
 import com.francescoalessi.recipes.editing.AddIngredientActivity;
 import com.francescoalessi.recipes.editing.EditRecipeActivity;
 
+import java.util.Collections;
 import java.util.List;
 
 public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAdapter.IngredientViewHolder> {
 
     private List<Ingredient> mIngredientList;
     private LayoutInflater mInflater;
+    public boolean editMode = true;
+    public boolean calculateQuantities = false;
+    private Ingredient mMaxIngredient;
+    private Float totalWeigth;
+
+    public IngredientListAdapter(Context context, boolean editMode)
+    {
+        onInstantiate(context);
+        this.editMode = editMode;
+    }
 
     public IngredientListAdapter(Context context)
+    {
+        onInstantiate(context);
+    }
+
+    private void onInstantiate(Context context)
     {
         mInflater = LayoutInflater.from(context);
     }
@@ -42,13 +59,19 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         {
             Ingredient mCurrent = mIngredientList.get(position);
             holder.mIngredientNameTextView.setText(mCurrent.getName());
-            holder.mIngredientPercentTextView.setText(mCurrent.getPercent() + "%"); // change this to use String.format to parse float
+            if(!calculateQuantities)
+                holder.mIngredientPercentTextView.setText(mCurrent.getPercent() + "%"); // TODO: change this to use String.format to parse float
+            else
+            {
+                mMaxIngredient = Collections.max(mIngredientList, new CompareIngredientPercent());
+                float percent = (totalWeigth * mCurrent.getPercent()) / 100; // TODO: Wrong formula, calculate weights properly
+                holder.mIngredientPercentTextView.setText(percent + "%");
+            }
         }
         else
         {
             holder.mIngredientNameTextView.setText("No ingredient");
         }
-
     }
 
     public void setIngredients(List<Ingredient> ingredients)
@@ -68,13 +91,26 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
     }
 
+    public void calculateQuantities(float totalWeigth)
+    {
+        calculateQuantities = true;
+        this.totalWeigth = totalWeigth;
+        notifyDataSetChanged();
+    }
+
+    public void showPercent()
+    {
+        calculateQuantities = false;
+        notifyDataSetChanged();
+    }
+
     class IngredientViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         public final TextView mIngredientNameTextView;
         public final TextView mIngredientPercentTextView;
         public final Button mEditIngredientButton;
 
-            IngredientListAdapter mAdapter;
+        IngredientListAdapter mAdapter;
 
 
         public IngredientViewHolder(@NonNull View itemView, IngredientListAdapter adapter) {
@@ -85,7 +121,14 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
             mIngredientPercentTextView = itemView.findViewById(R.id.tv_ingredient_list_percent);
             mEditIngredientButton = itemView.findViewById(R.id.btn_edit_ingredient_list);
 
-            mEditIngredientButton.setOnClickListener(this);
+            if(adapter.editMode)
+            {
+                mEditIngredientButton.setOnClickListener(this);
+            }
+            else
+            {
+                mEditIngredientButton.setVisibility(View.GONE);
+            }
         }
 
 

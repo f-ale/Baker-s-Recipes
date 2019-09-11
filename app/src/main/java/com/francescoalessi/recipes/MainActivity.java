@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FloatingActionButton mFAB;
 
-    public static final String EXTRA_RECIPE_NAME = "extra_recipe_name";
     public static final String EXTRA_RECIPE_ID = "extra_recipe_id";
     public static final String EXTRA_INGREDIENT_ID = "extra_ingredient_id";
     public static final int NEW_RECIPE_ID = -1;

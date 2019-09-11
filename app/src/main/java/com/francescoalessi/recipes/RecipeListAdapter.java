@@ -90,7 +90,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             Context context = view.getContext();
 
             //start intent
-            Intent intent = new Intent(context, EditRecipeActivity.class);
+            Intent intent = new Intent(context, ViewRecipeActivity.class);
             intent.putExtra(MainActivity.EXTRA_RECIPE_ID, recipe.getId());
             context.startActivity(intent);
 
