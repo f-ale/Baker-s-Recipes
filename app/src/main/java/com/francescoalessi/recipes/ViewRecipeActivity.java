@@ -27,6 +27,7 @@ import com.francescoalessi.recipes.editing.EditRecipeActivity;
 import com.francescoalessi.recipes.editing.adapters.IngredientListAdapter;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModel;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModelFactory;
+import com.francescoalessi.recipes.utils.RecipeUtils;
 
 import java.util.List;
 
@@ -40,13 +41,17 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
     private EditText mTotalWeightEditText;
     private IngredientListAdapter mAdapter;
     private int mRecipeId;
+    private boolean calculateQuantities = false;
+
+    private Recipe mRecipeData;
+    private List<Ingredient> mIngredientsData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_recipe);
 
-        mTotalWeightEditText = findViewById(R.id.et_total_recipe_weight);
+        mTotalWeightEditText = findViewById(R.id.et_total_recipe_weight); // TODO: Update weights if total weight is changed and calculate weights button is checked
         mCalculateWeightsButton = findViewById(R.id.btn_calculate_quantities);
         mCalculateWeightsButton.setOnCheckedChangeListener(this);
 
@@ -91,6 +96,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
             @Override
             public void onChanged(@Nullable final Recipe recipe) {
                 populateRecipeUI(recipe);
+                mRecipeData = recipe;
             }});
 
         mIngredientList = mEditRecipeViewModel.getRecipeIngredients();
@@ -98,6 +104,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
             @Override
             public void onChanged(List<Ingredient> ingredients) {
                 mAdapter.setIngredients(ingredients);
+                mIngredientsData = ingredients;
             }
         });
     }
@@ -150,6 +157,63 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
             return true;
         }
 
+        if(item.getItemId() == R.id.action_share)
+        {
+            List<Ingredient> ingredients = mIngredientsData;
+
+            String recipe = "";
+
+            if(ingredients != null)
+            {
+                if(mRecipeData != null)
+                {
+                    recipe = recipe.concat(mRecipeData.getRecipeName() + "\n\n");
+                }
+                else return false;
+
+                float percentSum = RecipeUtils.getPercentSum(ingredients);
+                float totalWeight;
+
+                String totalWeightString = mTotalWeightEditText.getText().toString();
+
+                if(totalWeightString != null && !totalWeightString.equals(""))
+                    totalWeight = Float.parseFloat(totalWeightString);
+                else
+                    totalWeight = 0;
+
+                if(calculateQuantities)
+                {
+                    recipe = recipe.concat("Makes " + Math.round(totalWeight) + "g\n\n");
+                }
+
+                for(Ingredient i : ingredients)
+                {
+                    String ingredientString;
+
+                    if(calculateQuantities)
+                    {
+                        ingredientString = RecipeUtils.getFormattedIngredientWeight
+                                (percentSum, totalWeight, i.getPercent());
+                    }
+                    else
+                        ingredientString = RecipeUtils.getFormattedIngredientPercent(i.getPercent());
+                    recipe = recipe.concat(i.getName() + " " + ingredientString + "\n");
+                }
+
+            }
+            else return false;
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, recipe);
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -159,6 +223,8 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
         {
             if(isChecked)
             {
+                calculateQuantities = true;
+
                 if(mTotalWeightEditText.getText() != null)
                 {
                     String weightText = mTotalWeightEditText.getText().toString();
@@ -175,6 +241,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
             else
             {
                 mAdapter.showPercent();
+                calculateQuantities = false;
             }
 
         }

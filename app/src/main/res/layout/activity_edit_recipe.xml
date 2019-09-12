@@ -8,46 +8,72 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/et_recipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="289dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
             android:hint="Recipe name..."
             android:padding="16dp"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_pick_image"
+            app:layout_constraintStart_toEndOf="@+id/btn_pick_image"
+            app:layout_constraintTop_toTopOf="@+id/btn_pick_image" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_ingredient_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/et_recipe" />
 
         <Button
             android:id="@+id/btn_new_ingredient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
             android:background="@color/colorPrimary"
             android:padding="16dp"
-            android:text="Add Ingredient" />
+            android:text="Add Ingredient"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_ingredient_list" />
 
         <Button
             android:id="@+id/btn_save_recipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
             android:background="@color/colorPrimary"
             android:padding="16dp"
-            android:text="Save Recipe" />
+            android:text="Save Recipe"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_ingredient_list" />
 
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/btn_pick_image"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_action_pick_image" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

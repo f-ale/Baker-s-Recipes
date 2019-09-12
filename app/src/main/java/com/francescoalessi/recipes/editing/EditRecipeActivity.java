@@ -81,7 +81,6 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             {
                 mNewIngredientButton.setVisibility(View.GONE);
                 setTitle("New Recipe");
-                mRecipeNameEditText.requestFocus();
             }
             else
             {
@@ -125,7 +124,6 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         {
             mRecipeNameEditText.setText(recipe.getRecipeName());
             mRecipeNameEditText.setSelection(mRecipeNameEditText.getText().length());
-            mRecipeNameEditText.requestFocus();
             setTitle(recipe.getRecipeName());
         }
     }

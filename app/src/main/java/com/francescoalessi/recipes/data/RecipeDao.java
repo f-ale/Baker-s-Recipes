@@ -30,7 +30,7 @@ public interface RecipeDao {
     @Update
     int update(Ingredient ingredient);
 
-    @Query("SELECT * from ingredient_table WHERE recipeId = :recipeId")
+    @Query("SELECT * from ingredient_table WHERE recipeId = :recipeId ORDER BY percent DESC")
     LiveData<List<Ingredient>> getIngredientsForRecipe(int recipeId);
 
     @Query("SELECT * from recipe_table WHERE id = :id")

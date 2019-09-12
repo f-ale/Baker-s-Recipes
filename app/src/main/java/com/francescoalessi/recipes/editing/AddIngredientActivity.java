@@ -59,6 +59,11 @@ public class AddIngredientActivity extends AppCompatActivity implements View.OnC
 
         retrieveViewModel();
         retrieveIngredientData(savedInstanceState);
+
+        if(mIngredientId != -1)
+        {
+            mAddIngredientButton.setText("Save Changes");
+        }
     }
 
     private void retrieveViewModel()

@@ -17,7 +17,9 @@ import com.francescoalessi.recipes.R;
 import com.francescoalessi.recipes.data.Ingredient;
 import com.francescoalessi.recipes.data.comparators.CompareIngredientPercent;
 import com.francescoalessi.recipes.editing.AddIngredientActivity;
+import com.francescoalessi.recipes.utils.RecipeUtils;
 
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -80,23 +82,15 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
             if(!calculateQuantities)
             {
-                float percent = mCurrent.getPercent();
-                if(percent == Math.round(percent))
-                    holder.mIngredientPercentTextView.setText(Math.round(percent) + "%"); // TODO: change this to use String.format to parse float
-                else
-                    holder.mIngredientPercentTextView.setText(percent + "%"); // TODO: change this to use String.format to parse float
+                String percentString = RecipeUtils.getFormattedIngredientPercent(mCurrent.getPercent());
+                holder.mIngredientPercentTextView.setText(percentString);
             }
-
             else
             {
                 float percentSum = getPercentSum(mIngredientList);
 
-                float weight = getIngredientWeight(totalWeigth, percentSum, mCurrent);
-
-                if(weight == Math.round(weight))
-                    holder.mIngredientPercentTextView.setText(Math.round(weight) + "g"); // TODO: change this to use String.format to parse float
-                else
-                    holder.mIngredientPercentTextView.setText(weight + "g"); // TODO: change this to use String.format to parse float
+                String weightString = RecipeUtils.getFormattedIngredientWeight(percentSum, totalWeigth, mCurrent.getPercent());
+                holder.mIngredientPercentTextView.setText(weightString);
             }
         }
         else
