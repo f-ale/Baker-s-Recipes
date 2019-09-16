@@ -23,7 +23,9 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/btn_pick_image"
             app:layout_constraintStart_toEndOf="@+id/btn_pick_image"
-            app:layout_constraintTop_toTopOf="@+id/btn_pick_image" />
+            app:layout_constraintTop_toTopOf="@+id/btn_pick_image"
+            app:layout_goneMarginStart="64dp"
+            app:layout_goneMarginTop="78dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_ingredient_list"

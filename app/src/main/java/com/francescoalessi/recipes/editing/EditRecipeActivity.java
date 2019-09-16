@@ -11,16 +11,26 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.francescoalessi.recipes.MainActivity;
 import com.francescoalessi.recipes.R;
 import com.francescoalessi.recipes.data.Ingredient;
@@ -28,7 +38,9 @@ import com.francescoalessi.recipes.data.Recipe;
 import com.francescoalessi.recipes.editing.adapters.IngredientListAdapter;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModel;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModelFactory;
+import com.francescoalessi.recipes.utils.RequestCodes;
 
+import java.io.IOException;
 import java.util.List;
 
 public class EditRecipeActivity extends AppCompatActivity implements View.OnClickListener {
@@ -40,8 +52,10 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     private LiveData<List<Ingredient>> mIngredientList;
     private Button mNewIngredientButton;
     private RecyclerView mIngredientsRecyclerView;
+    private ImageButton mPickImageButton;
     private IngredientListAdapter mAdapter;
     private int mRecipeId;
+    private Recipe recipeData;
 
 
     @Override
@@ -63,6 +77,9 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         mNewIngredientButton = findViewById(R.id.btn_new_ingredient);
         mNewIngredientButton.setOnClickListener(this);
 
+        mPickImageButton = findViewById(R.id.btn_pick_image);
+        mPickImageButton.setOnClickListener(this);
+
         mIngredientsRecyclerView = findViewById(R.id.rv_ingredient_list);
         mAdapter = new IngredientListAdapter(this);
         mIngredientsRecyclerView.setAdapter(mAdapter);
@@ -80,6 +97,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             if (mRecipeId == -1)
             {
                 mNewIngredientButton.setVisibility(View.GONE);
+                mPickImageButton.setVisibility(View.GONE);
                 setTitle("New Recipe");
             }
             else
@@ -88,7 +106,8 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
                 mRecipe.observe(this, new Observer<Recipe>() {
                     @Override
                     public void onChanged(@Nullable final Recipe recipe) {
-                        populateRecipeUI(recipe);
+                        recipeData = recipe;
+                        populateRecipeUI();
                     }});
 
                 mIngredientList = mEditRecipeViewModel.getRecipeIngredients();
@@ -118,21 +137,58 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         new ItemTouchHelper(deleteRecipeCallback).attachToRecyclerView(mIngredientsRecyclerView);
     }
 
-    private void populateRecipeUI(Recipe recipe)
+    private void populateRecipeUI()
     {
+        Recipe recipe = recipeData;
+
         if(recipe != null)
         {
             mRecipeNameEditText.setText(recipe.getRecipeName());
             mRecipeNameEditText.setSelection(mRecipeNameEditText.getText().length());
+            loadThumbImage(recipe);
             setTitle(recipe.getRecipeName());
         }
     }
 
+    private void loadThumbImage(Recipe recipe)
+    {
+        if(recipe != null)
+        {
+            Uri uri = recipe.getRecipeImageUri();
+            if(uri != null)
+            {
+                Glide.with(mPickImageButton.getContext()).load(uri)
+                        .placeholder(R.drawable.ic_action_pick_image)
+                        .centerCrop()
+                        .into(mPickImageButton);
+            }
+        }
+    }
     @Override
     public boolean onSupportNavigateUp() {
         setResult(mRecipeId);
         finish();
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RequestCodes.PICK_IMAGE_REQUEST && data != null && data.getData() != null)
+        {
+            Uri imageUri = data.getData();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+            Recipe recipe = mRecipe.getValue();
+
+            if(recipe != null)
+            {
+                recipe.setRecipeImageUri(imageUri);
+                mEditRecipeViewModel.update(recipe);
+            }
+
+        }
     }
 
     @Override
@@ -168,6 +224,14 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             Intent intent = new Intent(context, AddIngredientActivity.class);
             intent.putExtra(MainActivity.EXTRA_RECIPE_ID, mRecipeId);
             context.startActivity(intent);
+        }
+
+        if(view.getId() == R.id.btn_pick_image)
+        {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            startActivityForResult(intent, RequestCodes.PICK_IMAGE_REQUEST);
         }
     }
 }

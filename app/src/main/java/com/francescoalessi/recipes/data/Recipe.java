@@ -1,5 +1,7 @@
 package com.francescoalessi.recipes.data;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -28,6 +30,12 @@ public class Recipe {
         this.id = id;
         this.mRecipeName = recipeName;
     }
+
+    private Uri recipeImageUri;
+
+    public Uri getRecipeImageUri() { return this.recipeImageUri; }
+
+    public void setRecipeImageUri(Uri newUri) { this.recipeImageUri = newUri; };
 
     public String getRecipeName()
     {

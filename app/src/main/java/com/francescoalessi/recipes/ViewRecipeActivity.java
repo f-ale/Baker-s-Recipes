@@ -11,16 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 
+import com.bumptech.glide.Glide;
 import com.francescoalessi.recipes.data.Ingredient;
 import com.francescoalessi.recipes.data.Recipe;
 import com.francescoalessi.recipes.editing.EditRecipeActivity;
@@ -28,7 +34,9 @@ import com.francescoalessi.recipes.editing.adapters.IngredientListAdapter;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModel;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModelFactory;
 import com.francescoalessi.recipes.utils.RecipeUtils;
+import com.francescoalessi.recipes.utils.RequestCodes;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ViewRecipeActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
@@ -42,6 +50,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
     private IngredientListAdapter mAdapter;
     private int mRecipeId;
     private boolean calculateQuantities = false;
+    private ImageView mRecipeThumbnailImageView;
 
     private Recipe mRecipeData;
     private List<Ingredient> mIngredientsData;
@@ -54,6 +63,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
         mTotalWeightEditText = findViewById(R.id.et_total_recipe_weight); // TODO: Update weights if total weight is changed and calculate weights button is checked
         mCalculateWeightsButton = findViewById(R.id.btn_calculate_quantities);
         mCalculateWeightsButton.setOnCheckedChangeListener(this);
+
+        mRecipeThumbnailImageView = findViewById(R.id.iv_recipe_thumbnail);
+        mRecipeThumbnailImageView.setVisibility(View.INVISIBLE);
 
         mIngredientsRecyclerView = findViewById(R.id.rv_ingredient_list);
         mAdapter = new IngredientListAdapter(this, false);
@@ -83,6 +95,24 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
         if(recipe != null)
         {
             setTitle(recipe.getRecipeName());
+            loadThumbImage(recipe);
+        }
+    }
+
+    private void loadThumbImage(Recipe recipe)
+    {
+        if(recipe != null)
+        {
+            Uri uri = recipe.getRecipeImageUri();
+            if(uri != null)
+            {
+                Glide.with(mRecipeThumbnailImageView.getContext()).load(uri)
+                        .placeholder(R.drawable.ic_action_pick_image)
+                        .centerCrop()
+                        .into(mRecipeThumbnailImageView);
+
+                mRecipeThumbnailImageView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -153,7 +183,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
             //start intent
             Intent intent = new Intent(context, EditRecipeActivity.class);
             intent.putExtra(MainActivity.EXTRA_RECIPE_ID, mRecipeId);
-            startActivityForResult(intent, 1); // TODO: Change request code
+            startActivityForResult(intent, RequestCodes.EDIT_RECIPE_REQUEST); // TODO: Change request code
             return true;
         }
 
@@ -208,7 +238,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
             sendIntent.putExtra(Intent.EXTRA_TEXT, recipe);
             sendIntent.setType("text/plain");
 
-            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            Intent shareIntent = Intent.createChooser(sendIntent, "Share Recipe");
             startActivity(shareIntent);
 
             return true;

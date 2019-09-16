@@ -14,4 +14,10 @@
         android:icon="@drawable/ic_action_share"
         android:orderInCategory="100"
         app:showAsAction="always"/>
+
+    <item
+        android:title="Delete"
+        android:id="@+id/action_delete"
+        android:orderInCategory="102"
+        app:showAsAction="never"/>
 </menu>

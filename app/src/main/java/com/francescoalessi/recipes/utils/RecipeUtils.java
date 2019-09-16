@@ -1,7 +1,19 @@
 package com.francescoalessi.recipes.utils;
 
-import com.francescoalessi.recipes.data.Ingredient;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.francescoalessi.recipes.R;
+import com.francescoalessi.recipes.concurrency.AppExecutors;
+import com.francescoalessi.recipes.data.Ingredient;
+import com.francescoalessi.recipes.data.Recipe;
+
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 

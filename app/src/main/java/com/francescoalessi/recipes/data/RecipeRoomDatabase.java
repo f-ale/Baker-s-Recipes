@@ -7,9 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Recipe.class, Ingredient.class}, version = 3, exportSchema = false) // TODO: set exportSchema to true later in development
+import com.francescoalessi.recipes.data.converters.UriTypeConverter;
+
+@Database(entities = {Recipe.class, Ingredient.class}, version = 4, exportSchema = false) // TODO: set exportSchema to true later in development
+@TypeConverters({UriTypeConverter.class})
 public abstract class RecipeRoomDatabase extends RoomDatabase
 {
     public abstract RecipeDao recipeDao();
@@ -59,11 +63,6 @@ public abstract class RecipeRoomDatabase extends RoomDatabase
             mDao.insert(word);
             word = new Recipe("Pizza col pollo");
             mDao.insert(word);
-
-            Ingredient ingredient = new Ingredient(word.getId(), "test", 23);
-            mDao.insert(ingredient);
-            ingredient = new Ingredient(word.getId(), "test2", 1);
-            mDao.insert(ingredient);
 
             return null;
         }
