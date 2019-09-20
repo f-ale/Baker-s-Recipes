@@ -7,6 +7,9 @@ import androidx.lifecycle.LiveData;
 import com.francescoalessi.recipes.concurrency.AppExecutors;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class RecipeRepository {
 
@@ -33,13 +36,25 @@ public class RecipeRepository {
 
     public LiveData<Recipe> getLastAddedRecipe() { return mRecipeDao.getLastAddedRecipe(); }
 
-    public void insert (final Recipe recipe)  {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+    public long insert (final Recipe recipe)  {
+        Future<Long> future = AppExecutors.getInstance().diskIO().submit(new Callable<Long>() {
             @Override
-            public void run() {
-                mRecipeDao.insert(recipe);
+            public Long call() {
+                return mRecipeDao.insert(recipe);
             }
         });
+
+        Long rowId = (long) -1;
+
+        try {
+            rowId = future.get();
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return rowId;
     }
 
     public void insert (final Ingredient ingredient)  {

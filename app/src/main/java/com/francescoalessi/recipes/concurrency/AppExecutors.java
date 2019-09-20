@@ -1,15 +1,16 @@
 package com.francescoalessi.recipes.concurrency;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AppExecutors {
 
     private static final Object LOCK = new Object();
     private static AppExecutors sInstance;
-    private final Executor diskIO;
+    private final ExecutorService diskIO;
 
-    private AppExecutors(Executor diskIO) {
+    private AppExecutors(ExecutorService diskIO) {
         this.diskIO = diskIO;
     }
 
@@ -22,7 +23,7 @@ public class AppExecutors {
         return sInstance;
     }
 
-    public Executor diskIO() {
+    public ExecutorService diskIO() {
         return diskIO;
     }
 }

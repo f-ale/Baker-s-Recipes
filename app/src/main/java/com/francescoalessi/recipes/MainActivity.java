@@ -98,25 +98,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 Recipe recipe = new Recipe(recipeName);
 
-                mRecipeViewModel.insert(recipe);
+                int recipeId = mRecipeViewModel.insert(recipe);
 
-                final LiveData<Recipe> newRecipe = mRecipeViewModel.getLastAddedRecipe();
-
-                newRecipe.observe(this, new Observer<Recipe>() {
-                    @Override
-                    public void onChanged(Recipe recipe) {
-                        startEditRecipeActivity(recipe);
-                        newRecipe.removeObserver(this);
-                    }
-                });
+                Intent intent = new Intent(this, EditRecipeActivity.class);
+                intent.putExtra(MainActivity.EXTRA_RECIPE_ID, recipeId);
+                startActivity(intent);
             }
         }
-    }
-
-    private void startEditRecipeActivity(Recipe recipe)
-    {
-        Intent intent = new Intent(this, EditRecipeActivity.class);
-        intent.putExtra(MainActivity.EXTRA_RECIPE_ID, recipe.getId());
-        startActivity(intent);
     }
 }

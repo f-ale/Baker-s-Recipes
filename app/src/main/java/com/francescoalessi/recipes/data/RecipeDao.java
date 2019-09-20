@@ -13,7 +13,7 @@ import java.util.List;
 public interface RecipeDao {
 
     @Insert
-    void insert(Recipe recipe);
+    long insert(Recipe recipe);
 
     @Delete
     void delete(Recipe recipe);
@@ -30,7 +30,7 @@ public interface RecipeDao {
     @Update
     int update(Ingredient ingredient);
 
-    @Query("SELECT * from recipe_table WHERE id = (SELECT max(id) FROM recipe_table) LIMIT 1")
+    @Query("SELECT * FROM recipe_table ORDER BY id DESC LIMIT 1;")
     LiveData<Recipe> getLastAddedRecipe();
 
     @Query("SELECT * from ingredient_table WHERE recipeId = :recipeId ORDER BY percent DESC")
