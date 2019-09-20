@@ -21,6 +21,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +41,7 @@ import com.francescoalessi.recipes.editing.adapters.IngredientListAdapter;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModel;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModelFactory;
 import com.francescoalessi.recipes.utils.RequestCodes;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.List;
@@ -50,8 +53,10 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     private EditRecipeViewModel mEditRecipeViewModel;
     private LiveData<Recipe> mRecipe;
     private LiveData<List<Ingredient>> mIngredientList;
-    private Button mNewIngredientButton;
+    private FloatingActionButton mNewIngredientButton;
     private RecyclerView mIngredientsRecyclerView;
+    private TextView mNoIngredientsTextView;
+    private TextView mIngredientsLabel;
     private ImageButton mPickImageButton;
     private IngredientListAdapter mAdapter;
     private int mRecipeId;
@@ -77,6 +82,9 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         mNewIngredientButton = findViewById(R.id.btn_new_ingredient);
         mNewIngredientButton.setOnClickListener(this);
 
+        mNoIngredientsTextView = findViewById(R.id.tv_no_ingredients);
+        mIngredientsLabel = findViewById(R.id.tv_ingredients_label);
+
         mPickImageButton = findViewById(R.id.btn_pick_image);
         mPickImageButton.setOnClickListener(this);
 
@@ -96,12 +104,14 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
 
             if (mRecipeId == -1)
             {
-                mNewIngredientButton.setVisibility(View.GONE);
+                mNewIngredientButton.hide();
                 mPickImageButton.setVisibility(View.GONE);
+                mIngredientsLabel.setVisibility(View.GONE);
                 setTitle("New Recipe");
             }
             else
             {
+                mSaveRecipeButton.setVisibility(View.GONE);
                 mRecipe = mEditRecipeViewModel.getRecipeById();
                 mRecipe.observe(this, new Observer<Recipe>() {
                     @Override
@@ -115,6 +125,12 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onChanged(List<Ingredient> ingredients) {
                         mAdapter.setIngredients(ingredients);
+                        if(ingredients != null && ingredients.size() <= 0)
+                        {
+                            mNoIngredientsTextView.setVisibility(View.VISIBLE);
+                        }
+                        else
+                            mNoIngredientsTextView.setVisibility(View.INVISIBLE);
                     }
                 });
             }
@@ -150,6 +166,23 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.edit_recipe_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.action_save_recipe)
+        {
+            saveAndFinish(true);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void loadThumbImage(Recipe recipe)
     {
         if(recipe != null)
@@ -166,8 +199,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     }
     @Override
     public boolean onSupportNavigateUp() {
-        setResult(mRecipeId);
-        finish();
+        saveAndFinish(mRecipeId != -1);
         return true;
     }
 
@@ -191,27 +223,39 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private void saveAndFinish(boolean saveChanges)
+    {
+        setResult(mRecipeId);
+        if(saveChanges)
+            saveChanges();
+        finish();
+    }
+
+    private void saveChanges()
+    {
+        Recipe recipe;
+        if(mRecipeId != -1)
+        {
+            recipe = mRecipe.getValue();
+            setResult(mRecipeId);
+        }
+        else
+            recipe = new Recipe("New Recipe");
+
+        if(!mRecipeNameEditText.getText().toString().equals(""))
+            recipe.setRecipeName(mRecipeNameEditText.getText().toString());
+
+        if(mRecipeId != -1)
+            mEditRecipeViewModel.update(recipe);
+        else
+            mEditRecipeViewModel.insert(recipe);
+    }
+
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.btn_save_recipe)
         {
-            Recipe recipe;
-            if(mRecipeId != -1)
-            {
-                recipe = mRecipe.getValue();
-                setResult(mRecipeId);
-            }
-            else
-                recipe = new Recipe("New Recipe");
-
-            if(!mRecipeNameEditText.getText().toString().equals(""))
-                recipe.setRecipeName(mRecipeNameEditText.getText().toString());
-
-            if(mRecipeId != -1)
-                mEditRecipeViewModel.update(recipe);
-            else
-                mEditRecipeViewModel.insert(recipe);
-
+            saveChanges();
             finish();
         }
 

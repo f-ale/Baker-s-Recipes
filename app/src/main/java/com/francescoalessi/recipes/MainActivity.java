@@ -3,6 +3,7 @@ package com.francescoalessi.recipes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -12,16 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.francescoalessi.recipes.data.Recipe;
 import com.francescoalessi.recipes.editing.EditRecipeActivity;
+import com.francescoalessi.recipes.editing.NewRecipeDialogFragment;
 import com.francescoalessi.recipes.model.RecipeViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, NewRecipeDialogFragment.NewRecipeDialogListener {
 
     private RecyclerView mRecyclerView;
     private RecipeListAdapter mAdapter;
@@ -76,12 +79,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if(view.getId() == R.id.fab)
         {
-            Context context = view.getContext();
-
-            //start intent
-            Intent intent = new Intent(context, EditRecipeActivity.class);
-            intent.putExtra(EXTRA_RECIPE_ID, NEW_RECIPE_ID);
-            context.startActivity(intent);
+            DialogFragment newFragment = new NewRecipeDialogFragment();
+            newFragment.show(getSupportFragmentManager(), "newRecipe");
         }
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, String recipeName) {
+        Log.d("ONDIALOG", "Recipename: " + recipeName);
+        if(recipeName != null && !recipeName.equals(""))
+        {
+            List<Recipe> recipeList = mRecipeViewModel.getRecipeList().getValue();
+            if(recipeList != null)
+            {
+                Recipe recipe = new Recipe(recipeList.size(), recipeName);
+
+                mRecipeViewModel.insert(recipe);
+
+                //start intent
+                Intent intent = new Intent(this, EditRecipeActivity.class);
+                intent.putExtra(MainActivity.EXTRA_RECIPE_ID, recipe.getId());
+                startActivity(intent);
+            }
+
+        }
+
     }
 }

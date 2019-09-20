@@ -31,6 +31,8 @@ public class RecipeRepository {
 
     public LiveData<Ingredient> getIngredientById(int id) { return mRecipeDao.getIngredientById(id); }
 
+    public LiveData<Recipe> getLastAddedRecipe() { return mRecipeDao.getLastAddedRecipe(); }
+
     public void insert (final Recipe recipe)  {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override

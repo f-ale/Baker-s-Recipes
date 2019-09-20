@@ -25,6 +25,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.francescoalessi.recipes.data.Ingredient;
@@ -51,6 +52,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
     private int mRecipeId;
     private boolean calculateQuantities = false;
     private ImageView mRecipeThumbnailImageView;
+    private TextView mNoIngredientsTextView;
 
     private Recipe mRecipeData;
     private List<Ingredient> mIngredientsData;
@@ -72,6 +74,8 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
         mIngredientsRecyclerView.setAdapter(mAdapter);
         mIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         Log.d("VIEWRECIPE", "onCreate");
+
+        mNoIngredientsTextView = findViewById(R.id.tv_no_ingredients);
 
         Intent intent = getIntent();
 
@@ -135,6 +139,10 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
             public void onChanged(List<Ingredient> ingredients) {
                 mAdapter.setIngredients(ingredients);
                 mIngredientsData = ingredients;
+                if(ingredients.size() == 0)
+                    mNoIngredientsTextView.setVisibility(View.VISIBLE);
+                else
+                    mNoIngredientsTextView.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -241,6 +249,20 @@ public class ViewRecipeActivity extends AppCompatActivity implements CompoundBut
             Intent shareIntent = Intent.createChooser(sendIntent, "Share Recipe");
             startActivity(shareIntent);
 
+            return true;
+        }
+
+        if(item.getItemId() == R.id.action_delete)
+        {
+            Recipe recipe;
+            if(mRecipeId != -1)
+            {
+                recipe = mRecipe.getValue();
+                setResult(mRecipeId);
+                mEditRecipeViewModel.delete(recipe);
+            }
+
+            finish();
             return true;
         }
 

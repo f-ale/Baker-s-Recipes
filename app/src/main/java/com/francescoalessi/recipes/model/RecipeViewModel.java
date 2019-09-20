@@ -31,4 +31,7 @@ public class RecipeViewModel extends AndroidViewModel {
     {
         mRepository.delete(recipe);
     }
+    public void insert(Recipe recipe) { mRepository.insert(recipe); }
+
+    public LiveData<Recipe> getLastAddedRecipe() { return mRepository.getLastAddedRecipe(); }
 }

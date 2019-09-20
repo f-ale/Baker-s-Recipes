@@ -12,6 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_no_ingredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:padding="64dp"
+            android:text="No ingredients yet. Add some!"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/rv_ingredient_list"
+            app:layout_constraintEnd_toEndOf="@+id/rv_ingredient_list"
+            app:layout_constraintStart_toStartOf="@+id/rv_ingredient_list"
+            app:layout_constraintTop_toTopOf="@+id/rv_ingredient_list" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_ingredient_list"
@@ -56,7 +70,6 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="28dp"
             android:text="Ingredients"
-            android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

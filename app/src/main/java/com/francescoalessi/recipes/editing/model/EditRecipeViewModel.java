@@ -47,6 +47,11 @@ public class EditRecipeViewModel extends AndroidViewModel {
         mRepository.delete(ingredient);
     }
 
+    public void delete(Recipe recipe)
+    {
+        mRepository.delete(recipe);
+    }
+
     public void update(Recipe recipe)
     {
         mRepository.update(recipe);
