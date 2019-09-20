@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecipeViewModel mRecipeViewModel;
 
     private FloatingActionButton mFAB;
-
+    private Recipe mLastAddedRecipe;
     public static final String EXTRA_RECIPE_ID = "extra_recipe_id";
     public static final String EXTRA_INGREDIENT_ID = "extra_ingredient_id";
     public static final int NEW_RECIPE_ID = -1;
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onChanged(@Nullable final List<Recipe> recipes) {
                 mAdapter.setRecipes(recipes);
+
+                if(recipes != null && recipes.size() > 0)
+                    mLastAddedRecipe = recipes.get(recipes.size()-1);
             }
         });
 
@@ -85,24 +89,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog, String recipeName) {
+    public void onDialogPositiveClick(DialogFragment dialog, String recipeName) { // TODO: Fix this whole thing, we need to get the proper ID
         Log.d("ONDIALOG", "Recipename: " + recipeName);
         if(recipeName != null && !recipeName.equals(""))
         {
             List<Recipe> recipeList = mRecipeViewModel.getRecipeList().getValue();
             if(recipeList != null)
             {
-                Recipe recipe = new Recipe(recipeList.size(), recipeName);
+                Recipe recipe = new Recipe(recipeName);
 
                 mRecipeViewModel.insert(recipe);
 
-                //start intent
-                Intent intent = new Intent(this, EditRecipeActivity.class);
-                intent.putExtra(MainActivity.EXTRA_RECIPE_ID, recipe.getId());
-                startActivity(intent);
+                final LiveData<Recipe> newRecipe = mRecipeViewModel.getLastAddedRecipe();
+
+                newRecipe.observe(this, new Observer<Recipe>() {
+                    @Override
+                    public void onChanged(Recipe recipe) {
+                        startEditRecipeActivity(recipe);
+                        newRecipe.removeObserver(this);
+                    }
+                });
             }
-
         }
+    }
 
+    private void startEditRecipeActivity(Recipe recipe)
+    {
+        Intent intent = new Intent(this, EditRecipeActivity.class);
+        intent.putExtra(MainActivity.EXTRA_RECIPE_ID, recipe.getId());
+        startActivity(intent);
     }
 }
