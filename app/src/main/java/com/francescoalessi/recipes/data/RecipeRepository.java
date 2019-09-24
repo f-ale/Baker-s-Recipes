@@ -11,22 +11,26 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class RecipeRepository {
+public class RecipeRepository
+{
 
     private RecipeDao mRecipeDao;
     private LiveData<List<Recipe>> mRecipeList;
 
-    public RecipeRepository(Application application) {
+    public RecipeRepository(Application application)
+    {
         RecipeRoomDatabase db = RecipeRoomDatabase.getDatabase(application);
         mRecipeDao = db.recipeDao();
         mRecipeList = mRecipeDao.getAllRecipes();
     }
 
-    public LiveData<List<Recipe>> getRecipeList() {
+    public LiveData<List<Recipe>> getRecipeList()
+    {
         return mRecipeList;
     }
 
-    public LiveData<List<Ingredient>> getIngredientsForRecipe(int recipeId) {
+    public LiveData<List<Ingredient>> getIngredientsForRecipe(int recipeId)
+    {
         return mRecipeDao.getIngredientsForRecipe(recipeId);
     }
 
@@ -36,67 +40,90 @@ public class RecipeRepository {
 
     public LiveData<Recipe> getLastAddedRecipe() { return mRecipeDao.getLastAddedRecipe(); }
 
-    public long insert (final Recipe recipe)  {
-        Future<Long> future = AppExecutors.getInstance().diskIO().submit(new Callable<Long>() {
+    public long insert(final Recipe recipe)
+    {
+        Future<Long> future = AppExecutors.getInstance().diskIO().submit(new Callable<Long>()
+        {
             @Override
-            public Long call() {
+            public Long call()
+            {
                 return mRecipeDao.insert(recipe);
             }
         });
 
         Long rowId = (long) -1;
 
-        try {
+        try
+        {
             rowId = future.get();
-        } catch (InterruptedException e1) {
+        }
+        catch (InterruptedException e1)
+        {
             e1.printStackTrace();
-        } catch (ExecutionException e) {
+        }
+        catch (ExecutionException e)
+        {
             e.printStackTrace();
         }
 
         return rowId;
     }
 
-    public void insert (final Ingredient ingredient)  {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+    public void insert(final Ingredient ingredient)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 mRecipeDao.insert(ingredient);
             }
         });
     }
 
-    public void update (final Recipe recipe)  {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+    public void update(final Recipe recipe)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 mRecipeDao.update(recipe);
             }
         });
     }
 
-    public void update (final Ingredient ingredient)  {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+    public void update(final Ingredient ingredient)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 mRecipeDao.update(ingredient);
             }
         });
     }
 
-    public void delete (final Recipe recipe)  {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+    public void delete(final Recipe recipe)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 mRecipeDao.delete(recipe);
             }
         });
     }
 
-    public void delete (final Ingredient ingredient)  {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+    public void delete(final Ingredient ingredient)
+    {
+        AppExecutors.getInstance().diskIO().execute(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 mRecipeDao.delete(ingredient);
             }
         });

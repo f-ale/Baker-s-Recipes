@@ -12,7 +12,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.francescoalessi.recipes.data.converters.UriTypeConverter;
 
-@Database(entities = {Recipe.class, Ingredient.class}, version = 4, exportSchema = false) // TODO: set exportSchema to true later in development
+@Database(entities = {Recipe.class, Ingredient.class}, version = 4, exportSchema = false)
+// TODO: set exportSchema to true later in development
 @TypeConverters({UriTypeConverter.class})
 public abstract class RecipeRoomDatabase extends RoomDatabase
 {
@@ -22,11 +23,11 @@ public abstract class RecipeRoomDatabase extends RoomDatabase
 
     static RecipeRoomDatabase getDatabase(final Context context)
     {
-        if(INSTANCE == null)
+        if (INSTANCE == null)
         {
             synchronized (RecipeRoomDatabase.class)
             {
-                if(INSTANCE == null)
+                if (INSTANCE == null)
                 {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             RecipeRoomDatabase.class, "recipe_database").
@@ -40,25 +41,30 @@ public abstract class RecipeRoomDatabase extends RoomDatabase
     }
 
     private static RoomDatabase.Callback sRoomDatabaseCallback =
-            new RoomDatabase.Callback(){
+            new RoomDatabase.Callback()
+            {
 
                 @Override
-                public void onCreate (@NonNull SupportSQLiteDatabase db){
+                public void onCreate(@NonNull SupportSQLiteDatabase db)
+                {
                     super.onCreate(db);
                     new PopulateDbAsync(INSTANCE).execute();
                 }
             };
 
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>
+    {
 
         private final RecipeDao mDao;
 
-        PopulateDbAsync(RecipeRoomDatabase db) {
+        PopulateDbAsync(RecipeRoomDatabase db)
+        {
             mDao = db.recipeDao();
         }
 
         @Override
-        protected Void doInBackground(final Void... params) {
+        protected Void doInBackground(final Void... params)
+        {
             Recipe word = new Recipe("Pizza a taglio");
             mDao.insert(word);
             word = new Recipe("Pizza col pollo");

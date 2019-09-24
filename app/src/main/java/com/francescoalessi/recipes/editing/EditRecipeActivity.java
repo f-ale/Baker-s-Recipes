@@ -43,10 +43,10 @@ import com.francescoalessi.recipes.editing.model.EditRecipeViewModelFactory;
 import com.francescoalessi.recipes.utils.RequestCodes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.IOException;
 import java.util.List;
 
-public class EditRecipeActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditRecipeActivity extends AppCompatActivity implements View.OnClickListener
+{
 
     private EditText mRecipeNameEditText;
     private Button mSaveRecipeButton;
@@ -64,13 +64,14 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recipe);
 
         ActionBar actionBar = getSupportActionBar();
 
-        if(actionBar != null)
+        if (actionBar != null)
         {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -95,7 +96,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
 
         Intent intent = getIntent();
 
-        if(intent != null)
+        if (intent != null)
         {
             mRecipeId = intent.getIntExtra(MainActivity.EXTRA_RECIPE_ID, -1);
 
@@ -113,19 +114,24 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             {
                 mSaveRecipeButton.setVisibility(View.GONE);
                 mRecipe = mEditRecipeViewModel.getRecipeById();
-                mRecipe.observe(this, new Observer<Recipe>() {
+                mRecipe.observe(this, new Observer<Recipe>()
+                {
                     @Override
-                    public void onChanged(@Nullable final Recipe recipe) {
+                    public void onChanged(@Nullable final Recipe recipe)
+                    {
                         recipeData = recipe;
                         populateRecipeUI();
-                    }});
+                    }
+                });
 
                 mIngredientList = mEditRecipeViewModel.getRecipeIngredients();
-                mIngredientList.observe(this, new Observer<List<Ingredient>>() {
+                mIngredientList.observe(this, new Observer<List<Ingredient>>()
+                {
                     @Override
-                    public void onChanged(List<Ingredient> ingredients) {
+                    public void onChanged(List<Ingredient> ingredients)
+                    {
                         mAdapter.setIngredients(ingredients);
-                        if(ingredients != null && ingredients.size() <= 0)
+                        if (ingredients != null && ingredients.size() <= 0)
                         {
                             mNoIngredientsTextView.setVisibility(View.VISIBLE);
                         }
@@ -136,14 +142,17 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
-        ItemTouchHelper.SimpleCallback deleteRecipeCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper.SimpleCallback deleteRecipeCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT)
+        {
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target)
+            {
                 return false;
             }
 
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
+            {
                 int position = viewHolder.getLayoutPosition();
                 Ingredient ingredient = mIngredientList.getValue().get(position);
                 mEditRecipeViewModel.delete(ingredient);
@@ -157,7 +166,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     {
         Recipe recipe = recipeData;
 
-        if(recipe != null)
+        if (recipe != null)
         {
             mRecipeNameEditText.setText(recipe.getRecipeName());
             mRecipeNameEditText.setSelection(mRecipeNameEditText.getText().length());
@@ -167,15 +176,17 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.edit_recipe_menu, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.action_save_recipe)
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
+        if (item.getItemId() == R.id.action_save_recipe)
         {
             saveAndFinish(true);
             return true;
@@ -185,10 +196,10 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
 
     private void loadThumbImage(Recipe recipe)
     {
-        if(recipe != null)
+        if (recipe != null)
         {
             Uri uri = recipe.getRecipeImageUri();
-            if(uri != null)
+            if (uri != null)
             {
                 Glide.with(mPickImageButton.getContext()).load(uri)
                         .placeholder(R.drawable.ic_action_pick_image)
@@ -197,24 +208,28 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
+
     @Override
-    public boolean onSupportNavigateUp() {
+    public boolean onSupportNavigateUp()
+    {
         saveAndFinish(mRecipeId != -1);
         return true;
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RequestCodes.PICK_IMAGE_REQUEST && data != null && data.getData() != null)
+        if (requestCode == RequestCodes.PICK_IMAGE_REQUEST && data != null && data.getData() != null)
         {
             Uri imageUri = data.getData();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            {
                 getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             }
             Recipe recipe = mRecipe.getValue();
 
-            if(recipe != null)
+            if (recipe != null)
             {
                 recipe.setRecipeImageUri(imageUri);
                 mEditRecipeViewModel.update(recipe);
@@ -226,7 +241,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     private void saveAndFinish(boolean saveChanges)
     {
         setResult(mRecipeId);
-        if(saveChanges)
+        if (saveChanges)
             saveChanges();
         finish();
     }
@@ -234,7 +249,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     private void saveChanges()
     {
         Recipe recipe;
-        if(mRecipeId != -1)
+        if (mRecipeId != -1)
         {
             recipe = mRecipe.getValue();
             setResult(mRecipeId);
@@ -242,24 +257,25 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         else
             recipe = new Recipe("New Recipe");
 
-        if(!mRecipeNameEditText.getText().toString().equals(""))
+        if (!mRecipeNameEditText.getText().toString().equals(""))
             recipe.setRecipeName(mRecipeNameEditText.getText().toString());
 
-        if(mRecipeId != -1)
+        if (mRecipeId != -1)
             mEditRecipeViewModel.update(recipe);
         else
             mEditRecipeViewModel.insert(recipe);
     }
 
     @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.btn_save_recipe)
+    public void onClick(View view)
+    {
+        if (view.getId() == R.id.btn_save_recipe)
         {
             saveChanges();
             finish();
         }
 
-        if(view.getId() == R.id.btn_new_ingredient)
+        if (view.getId() == R.id.btn_new_ingredient)
         {
             //Launch add Ingredient activity;
             Context context = view.getContext();
@@ -270,7 +286,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             context.startActivity(intent);
         }
 
-        if(view.getId() == R.id.btn_pick_image)
+        if (view.getId() == R.id.btn_pick_image)
         {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);

@@ -25,7 +25,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, NewRecipeDialogFragment.NewRecipeDialogListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, NewRecipeDialogFragment.NewRecipeDialogListener
+{
 
     private RecyclerView mRecyclerView;
     private RecipeListAdapter mAdapter;
@@ -38,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int NEW_RECIPE_ID = -1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -52,24 +54,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mRecipeViewModel = ViewModelProviders.of(this).get(RecipeViewModel.class);
 
-        mRecipeViewModel.getRecipeList().observe(this, new Observer<List<Recipe>>() {
+        mRecipeViewModel.getRecipeList().observe(this, new Observer<List<Recipe>>()
+        {
             @Override
-            public void onChanged(@Nullable final List<Recipe> recipes) {
+            public void onChanged(@Nullable final List<Recipe> recipes)
+            {
                 mAdapter.setRecipes(recipes);
 
-                if(recipes != null && recipes.size() > 0)
-                    mLastAddedRecipe = recipes.get(recipes.size()-1);
+                if (recipes != null && recipes.size() > 0)
+                    mLastAddedRecipe = recipes.get(recipes.size() - 1);
             }
         });
 
-        ItemTouchHelper.SimpleCallback deleteRecipeCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper.SimpleCallback deleteRecipeCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT)
+        {
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target)
+            {
                 return false;
             }
 
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
+            {
                 int position = viewHolder.getLayoutPosition();
                 Recipe recipe = mRecipeViewModel.getRecipeList().getValue().get(position);
                 mRecipeViewModel.delete(recipe);
@@ -80,8 +87,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.fab)
+    public void onClick(View view)
+    {
+        if (view.getId() == R.id.fab)
         {
             DialogFragment newFragment = new NewRecipeDialogFragment();
             newFragment.show(getSupportFragmentManager(), "newRecipe");
@@ -89,12 +97,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog, String recipeName) { // TODO: Fix this whole thing, we need to get the proper ID
+    public void onDialogPositiveClick(DialogFragment dialog, String recipeName)
+    { // TODO: Fix this whole thing, we need to get the proper ID
         Log.d("ONDIALOG", "Recipename: " + recipeName);
-        if(recipeName != null && !recipeName.equals(""))
+        if (recipeName != null && !recipeName.equals(""))
         {
             List<Recipe> recipeList = mRecipeViewModel.getRecipeList().getValue();
-            if(recipeList != null)
+            if (recipeList != null)
             {
                 Recipe recipe = new Recipe(recipeName);
 

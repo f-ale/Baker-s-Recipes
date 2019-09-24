@@ -23,7 +23,8 @@ import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
 
-public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAdapter.IngredientViewHolder> {
+public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAdapter.IngredientViewHolder>
+{
 
     private List<Ingredient> mIngredientList;
     private LayoutInflater mInflater;
@@ -68,19 +69,21 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
     @NonNull
     @Override
-    public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         View mItemView = mInflater.inflate(R.layout.ingredient_list_item, parent, false);
         return new IngredientViewHolder(mItemView, this);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
-        if(mIngredientList != null)
+    public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position)
+    {
+        if (mIngredientList != null)
         {
             Ingredient mCurrent = mIngredientList.get(position);
             holder.mIngredientNameTextView.setText(mCurrent.getName());
 
-            if(!calculateQuantities)
+            if (!calculateQuantities)
             {
                 String percentString = RecipeUtils.getFormattedIngredientPercent(mCurrent.getPercent());
                 holder.mIngredientPercentTextView.setText(percentString);
@@ -106,8 +109,9 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     }
 
     @Override
-    public int getItemCount() {
-        if(mIngredientList != null)
+    public int getItemCount()
+    {
+        if (mIngredientList != null)
         {
             return mIngredientList.size();
         }
@@ -138,7 +142,8 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         IngredientListAdapter mAdapter;
 
 
-        public IngredientViewHolder(@NonNull View itemView, IngredientListAdapter adapter) {
+        public IngredientViewHolder(@NonNull View itemView, IngredientListAdapter adapter)
+        {
             super(itemView);
 
             mAdapter = adapter;
@@ -146,7 +151,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
             mIngredientPercentTextView = itemView.findViewById(R.id.tv_ingredient_list_percent);
             mEditIngredientButton = itemView.findViewById(R.id.btn_edit_ingredient_list);
 
-            if(adapter.editMode)
+            if (adapter.editMode)
             {
                 mEditIngredientButton.setOnClickListener(this);
             }
@@ -158,13 +163,14 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
 
         @Override
-        public void onClick(View view) {
+        public void onClick(View view)
+        {
 
             int position = getLayoutPosition();
             Ingredient ingredient = mIngredientList.get(position);
             Context context = view.getContext();
 
-            if(view.getId() == R.id.btn_edit_ingredient_list)
+            if (view.getId() == R.id.btn_edit_ingredient_list)
             {
                 editIngredient(ingredient, context);
             }

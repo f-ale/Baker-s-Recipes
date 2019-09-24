@@ -4,8 +4,10 @@ import com.francescoalessi.recipes.data.Ingredient;
 
 import java.util.Comparator;
 
-public class CompareIngredientPercent implements Comparator<Ingredient> {
-    public int compare(Ingredient a, Ingredient b) {
+public class CompareIngredientPercent implements Comparator<Ingredient>
+{
+    public int compare(Ingredient a, Ingredient b)
+    {
         if (a.getPercent() > b.getPercent())
             return -1;
         if (a.getPercent() == b.getPercent())

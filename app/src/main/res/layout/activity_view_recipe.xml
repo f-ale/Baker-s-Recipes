@@ -37,31 +37,17 @@
 
         <EditText
             android:id="@+id/et_total_recipe_weight"
-            android:layout_width="216dp"
-            android:layout_height="69dp"
+            android:layout_width="218dp"
+            android:layout_height="51dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="28dp"
             android:ems="10"
             android:hint="Total recipe weight..."
             android:inputType="number"
             android:padding="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_ingredient_list" />
-
-        <Switch
-            android:id="@+id/btn_calculate_quantities"
-            android:layout_width="149dp"
-            android:layout_height="67dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
-            android:padding="16dp"
-            android:text="Show Quantities"
-            android:textOff="Show Quantities"
-            android:textOn="Show Percentage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_ingredient_list" />
+            app:layout_constraintBottom_toBottomOf="@+id/total_weight_tv"
+            app:layout_constraintStart_toEndOf="@+id/total_weight_tv"
+            app:layout_constraintTop_toTopOf="@+id/total_weight_tv" />
 
         <TextView
             android:id="@+id/tv_ingredients_label"
@@ -78,13 +64,32 @@
             android:id="@+id/iv_recipe_thumbnail"
             android:layout_width="59dp"
             android:layout_height="53dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/rv_ingredient_list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_no_ingredients"
+            app:layout_constraintTop_toTopOf="@+id/tv_ingredients_label"
+            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_action_pick_image" />
+
+        <TextView
+            android:id="@+id/total_weight_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Total Weight:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="@+id/make_recipe_label_tv"
+            app:layout_constraintTop_toBottomOf="@+id/make_recipe_label_tv" />
+
+        <TextView
+            android:id="@+id/make_recipe_label_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Make Recipe"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintStart_toStartOf="@+id/tv_ingredients_label"
+            app:layout_constraintTop_toBottomOf="@+id/rv_ingredient_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

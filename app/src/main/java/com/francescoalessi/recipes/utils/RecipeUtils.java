@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class RecipeUtils {
+public class RecipeUtils
+{
 
     public static String getFormattedIngredientWeight(float percentSum, float totalWeight, float ingredientPercent)
     {
@@ -25,7 +26,7 @@ public class RecipeUtils {
 
         DecimalFormat oneDecimal = new DecimalFormat("#.#");
 
-        if(weight == Math.round(weight))
+        if (weight == Math.round(weight))
             return Math.round(weight) + "g"; // TODO: change this to use String.format to parse float
         else
             return oneDecimal.format(weight) + "g"; // TODO: change this to use String.format to parse float
@@ -35,7 +36,7 @@ public class RecipeUtils {
     {
         DecimalFormat oneDecimal = new DecimalFormat("#.#");
 
-        if(percent == Math.round(percent))
+        if (percent == Math.round(percent))
             return Math.round(percent) + "%"; // TODO: change this to use String.format to parse float
         else
             return oneDecimal.format(percent) + "%"; // TODO: change this to use String.format to parse float

@@ -14,9 +14,11 @@ import androidx.fragment.app.DialogFragment;
 
 import com.francescoalessi.recipes.R;
 
-public class NewRecipeDialogFragment extends DialogFragment {
+public class NewRecipeDialogFragment extends DialogFragment
+{
 
-    public interface NewRecipeDialogListener {
+    public interface NewRecipeDialogListener
+    {
         void onDialogPositiveClick(DialogFragment dialog, String recipeName);
     }
 
@@ -24,23 +26,28 @@ public class NewRecipeDialogFragment extends DialogFragment {
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
+    {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(inflater.inflate(R.layout.dialog_new_recipe, null))
                 .setTitle("New Recipe")
-                .setPositiveButton("Create Recipe", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Create Recipe", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
                         EditText recipeNameEditText = NewRecipeDialogFragment.this.getDialog().findViewById(R.id.et_recipe_name);
                         String recipeName = recipeNameEditText.getText().toString();
                         listener.onDialogPositiveClick(NewRecipeDialogFragment.this, recipeName);
 
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
                         NewRecipeDialogFragment.this.getDialog().cancel();
                     }
                 });
@@ -49,13 +56,17 @@ public class NewRecipeDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
+    public void onAttach(@NonNull Context context)
+    {
         super.onAttach(context);
         // Verify that the host activity implements the callback interface
-        try {
+        try
+        {
             // Instantiate the NoticeDialogListener so we can send events to the host
             listener = (NewRecipeDialogListener) context;
-        } catch (ClassCastException e) {
+        }
+        catch (ClassCastException e)
+        {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString()
                     + " must implement NewRecipeDialogListener");

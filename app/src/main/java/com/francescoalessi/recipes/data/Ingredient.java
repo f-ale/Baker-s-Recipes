@@ -14,7 +14,8 @@ import static androidx.room.ForeignKey.CASCADE;
         childColumns = "recipeId",
         onDelete = CASCADE))
 
-public class Ingredient {
+public class Ingredient
+{
 
     @PrimaryKey(autoGenerate = true)
     int id;
@@ -33,22 +34,26 @@ public class Ingredient {
         this.percent = percent;
     }
 
-    public float getPercent() {
+    public float getPercent()
+    {
         return percent;
     }
 
-    public void setPercent(float percent) {
+    public void setPercent(float percent)
+    {
         this.percent = percent;
     }
 
     @NonNull
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
     public int getId() { return id; }
 
-    public void setName(@NonNull String name) {
+    public void setName(@NonNull String name)
+    {
         this.name = name;
     }
 }

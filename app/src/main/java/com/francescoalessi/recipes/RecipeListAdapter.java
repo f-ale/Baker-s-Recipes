@@ -22,7 +22,8 @@ import com.francescoalessi.recipes.utils.RecipeUtils;
 import java.io.IOException;
 import java.util.List;
 
-public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeViewHolder> {
+public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeViewHolder>
+{
 
     private List<Recipe> mRecipeList;
     private LayoutInflater mInflater;
@@ -35,14 +36,16 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     @NonNull
     @Override
-    public RecipeListAdapter.RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecipeListAdapter.RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         View mItemView = mInflater.inflate(R.layout.recipe_list_item, parent, false);
         return new RecipeViewHolder(mItemView, this);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeListAdapter.RecipeViewHolder holder, int position) {
-        if(mRecipeList != null)
+    public void onBindViewHolder(@NonNull RecipeListAdapter.RecipeViewHolder holder, int position)
+    {
+        if (mRecipeList != null)
         {
             Recipe mCurrent = mRecipeList.get(position);
             holder.mRecipeNameTextView.setText(mCurrent.getRecipeName());
@@ -59,7 +62,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     {
         Uri uri = recipe.getRecipeImageUri();
 
-        if(uri != null)
+        if (uri != null)
         {
             Glide.with(view.getContext()).load(uri)
                     .placeholder(R.drawable.ic_action_pick_image)
@@ -78,8 +81,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     @Override
-    public int getItemCount() {
-        if(mRecipeList != null)
+    public int getItemCount()
+    {
+        if (mRecipeList != null)
         {
             return mRecipeList.size();
         }
@@ -96,7 +100,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         final RecipeListAdapter mAdapter;
 
 
-        public RecipeViewHolder(@NonNull View itemView, RecipeListAdapter adapter) {
+        public RecipeViewHolder(@NonNull View itemView, RecipeListAdapter adapter)
+        {
             super(itemView);
 
             mAdapter = adapter;
@@ -108,7 +113,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
 
         @Override
-        public void onClick(View view) {
+        public void onClick(View view)
+        {
             int position = getLayoutPosition();
             Recipe recipe = mRecipeList.get(position);
             Context context = view.getContext();

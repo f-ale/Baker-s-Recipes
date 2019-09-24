@@ -10,7 +10,8 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public interface RecipeDao {
+public interface RecipeDao
+{
 
     @Insert
     long insert(Recipe recipe);

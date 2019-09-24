@@ -9,7 +9,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "recipe_table")
-public class Recipe {
+public class Recipe
+{
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -35,7 +36,9 @@ public class Recipe {
 
     public Uri getRecipeImageUri() { return this.recipeImageUri; }
 
-    public void setRecipeImageUri(Uri newUri) { this.recipeImageUri = newUri; };
+    public void setRecipeImageUri(Uri newUri) { this.recipeImageUri = newUri; }
+
+    ;
 
     public String getRecipeName()
     {

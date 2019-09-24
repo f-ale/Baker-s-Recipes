@@ -10,12 +10,13 @@ import com.francescoalessi.recipes.data.RecipeRepository;
 
 import java.util.List;
 
-public class RecipeViewModel extends AndroidViewModel {
+public class RecipeViewModel extends AndroidViewModel
+{
 
     private RecipeRepository mRepository;
     private LiveData<List<Recipe>> mRecipeList;
 
-    public RecipeViewModel (Application application)
+    public RecipeViewModel(Application application)
     {
         super(application);
         mRepository = new RecipeRepository(application);
@@ -31,6 +32,7 @@ public class RecipeViewModel extends AndroidViewModel {
     {
         mRepository.delete(recipe);
     }
+
     public int insert(Recipe recipe) { return (int) mRepository.insert(recipe); }
 
 }

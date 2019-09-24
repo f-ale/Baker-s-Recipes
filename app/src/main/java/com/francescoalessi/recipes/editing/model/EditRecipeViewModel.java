@@ -11,7 +11,8 @@ import com.francescoalessi.recipes.data.RecipeRepository;
 
 import java.util.List;
 
-public class EditRecipeViewModel extends AndroidViewModel {
+public class EditRecipeViewModel extends AndroidViewModel
+{
 
     private RecipeRepository mRepository;
     private LiveData<Recipe> mRecipe;

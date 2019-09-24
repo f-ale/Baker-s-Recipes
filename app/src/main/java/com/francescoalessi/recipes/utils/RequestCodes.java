@@ -1,6 +1,7 @@
 package com.francescoalessi.recipes.utils;
 
-public class RequestCodes {
+public class RequestCodes
+{
 
     public static final int EDIT_RECIPE_REQUEST = 1;
     public static final int PICK_IMAGE_REQUEST = 2;

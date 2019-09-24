@@ -6,7 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class EditRecipeViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class EditRecipeViewModelFactory extends ViewModelProvider.NewInstanceFactory
+{
 
     private final Application application;
     private final int recipeId;
@@ -19,7 +20,8 @@ public class EditRecipeViewModelFactory extends ViewModelProvider.NewInstanceFac
 
     @NonNull
     @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass)
+    {
         return (T) new EditRecipeViewModel(application, recipeId);
     }
 }
