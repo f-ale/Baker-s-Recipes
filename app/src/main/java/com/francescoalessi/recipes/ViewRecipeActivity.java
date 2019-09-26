@@ -66,7 +66,7 @@ public class ViewRecipeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_recipe);
 
-        mTotalWeightEditText = findViewById(R.id.et_total_recipe_weight); // TODO: Update weights if total weight is changed and calculate weights button is checked
+        mTotalWeightEditText = findViewById(R.id.et_total_recipe_weight);
 
         mRecipeThumbnailImageView = findViewById(R.id.iv_recipe_thumbnail);
         mRecipeThumbnailImageView.setVisibility(View.INVISIBLE);
@@ -248,7 +248,7 @@ public class ViewRecipeActivity extends AppCompatActivity
             //start intent
             Intent intent = new Intent(context, EditRecipeActivity.class);
             intent.putExtra(MainActivity.EXTRA_RECIPE_ID, mRecipeId);
-            startActivityForResult(intent, RequestCodes.EDIT_RECIPE_REQUEST); // TODO: Change request code
+            startActivityForResult(intent, RequestCodes.EDIT_RECIPE_REQUEST);
             return true;
         }
 

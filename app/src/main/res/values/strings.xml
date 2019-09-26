@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">Recipes</string>
+    <string name="app_name">Baker\'s Recipes</string>
+    <string name="ingredient_name">Ingredient Name</string>
+    <string name="percent">Percent</string>
+    <string name="percent_symbol">%</string>
+    <string name="add_ingredient">Add Ingredient</string>
+    <string name="recipe_name_hint">Recipe name…</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="create_recipe">Create Recipe</string>
+    <string name="no_ingredients_yet">No ingredients yet. Add some!</string>
+    <string name="total_recipe_weight_hint">Total recipe weight…</string>
+    <string name="total_weight">Total weight:</string>
+    <string name="make_recipe">Make Recipe</string>
+    <string name="recipe_thumbnail_desc">Recipe Thumbnail</string>
+    <string name="ingredient_name_hint">Ingredient name…</string>
 </resources>

@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, String recipeName)
-    { // TODO: Fix this whole thing, we need to get the proper ID
+    {
         Log.d("ONDIALOG", "Recipename: " + recipeName);
         if (recipeName != null && !recipeName.equals(""))
         {

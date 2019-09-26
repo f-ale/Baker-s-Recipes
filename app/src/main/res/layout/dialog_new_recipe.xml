@@ -8,7 +8,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:ems="10"
-        android:hint="Recipe name..."
+        android:hint="@string/recipe_name_hint"
+        android:maxLength="40"
         android:inputType="textPersonName"
         android:padding="16dp" />
 </FrameLayout>

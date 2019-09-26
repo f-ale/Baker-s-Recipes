@@ -14,7 +14,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:textSize="24sp"
-        android:hint="Ingredient name..."
+        android:hint="@string/ingredient_name_hint"
         app:layout_constraintStart_toStartOf="@+id/tv_ingredient_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_ingredient_name"
         tools:text="Farina W260" />
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="36dp"
-        android:text="Ingredient Name"
+        android:text="@string/ingredient_name"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:text="Percent"
+        android:text="@string/percent"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/et_ingredient_name"
         app:layout_constraintTop_toBottomOf="@+id/et_ingredient_name" />
@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="%"
+        android:text="@string/percent_symbol"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="@+id/et_ingredient_percent"
         app:layout_constraintStart_toEndOf="@+id/et_ingredient_percent"
@@ -69,7 +69,7 @@
         android:layout_height="71dp"
         android:layout_marginEnd="36dp"
         android:background="@color/colorPrimary"
-        android:text="Add Ingredient"
+        android:text="@string/add_ingredient"
         app:layout_constraintBottom_toBottomOf="@+id/et_ingredient_percent"
         app:layout_constraintEnd_toEndOf="parent" />
 

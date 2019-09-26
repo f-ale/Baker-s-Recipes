@@ -19,7 +19,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:padding="64dp"
-            android:text="No ingredients yet. Add some!"
+            android:text="@string/no_ingredients_yet"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/rv_ingredient_list"
@@ -42,9 +42,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="28dp"
             android:ems="10"
-            android:hint="Total recipe weight..."
+            android:hint="@string/total_recipe_weight_hint"
             android:inputType="number"
             android:padding="16dp"
+            android:maxLength="15"
             app:layout_constraintBottom_toBottomOf="@+id/total_weight_tv"
             app:layout_constraintStart_toEndOf="@+id/total_weight_tv"
             app:layout_constraintTop_toTopOf="@+id/total_weight_tv" />
@@ -55,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:layout_marginTop="28dp"
-            android:text="Ingredients"
+            android:text="@string/ingredients"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -76,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Total Weight:"
+            android:text="@string/total_weight"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintStart_toStartOf="@+id/make_recipe_label_tv"
             app:layout_constraintTop_toBottomOf="@+id/make_recipe_label_tv" />
@@ -86,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Make Recipe"
+            android:text="@string/make_recipe"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintStart_toStartOf="@+id/tv_ingredients_label"
             app:layout_constraintTop_toBottomOf="@+id/rv_ingredient_list" />

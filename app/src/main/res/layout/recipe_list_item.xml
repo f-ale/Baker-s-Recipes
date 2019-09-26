@@ -9,7 +9,7 @@
         android:id="@+id/iv_recipe_thumbnail"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:contentDescription="Recipe Thumbnail"
+        android:contentDescription="@string/recipe_thumbnail_desc"
         android:src="@mipmap/ic_launcher"
         android:padding="2dp"
         android:layout_gravity="center_vertical"/>
@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="26sp"
         tools:text="Pizza a Taglio" />
 
