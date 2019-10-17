@@ -17,6 +17,7 @@ import com.francescoalessi.recipes.R;
 import com.francescoalessi.recipes.data.Ingredient;
 import com.francescoalessi.recipes.data.comparators.CompareIngredientPercent;
 import com.francescoalessi.recipes.editing.AddIngredientActivity;
+import com.francescoalessi.recipes.editing.EditRecipeActivity;
 import com.francescoalessi.recipes.utils.RecipeUtils;
 
 import java.text.DecimalFormat;
@@ -30,7 +31,6 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     private LayoutInflater mInflater;
     public boolean editMode = true;
     public boolean calculateQuantities = false;
-    private Ingredient mMaxIngredient;
     private Float totalWeigth;
 
     public IngredientListAdapter(Context context, boolean editMode)
@@ -172,7 +172,8 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
             if (view.getId() == R.id.btn_edit_ingredient_list)
             {
-                editIngredient(ingredient, context);
+                EditRecipeActivity activity = (EditRecipeActivity) context;
+                activity.launchEditDialogForId(ingredient.getId(), ingredient.getName(), ingredient.getPercent());
             }
         }
 

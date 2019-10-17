@@ -13,4 +13,5 @@
     <string name="make_recipe">Make Recipe</string>
     <string name="recipe_thumbnail_desc">Recipe Thumbnail</string>
     <string name="ingredient_name_hint">Ingredient name…</string>
+    <string name="ingredient_percent_hint">Ingredient percent...</string>
 </resources>

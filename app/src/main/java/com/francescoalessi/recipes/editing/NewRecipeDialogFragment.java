@@ -48,7 +48,10 @@ public class NewRecipeDialogFragment extends DialogFragment
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i)
                     {
-                        NewRecipeDialogFragment.this.getDialog().cancel();
+                        Dialog dialog = NewRecipeDialogFragment.this.getDialog();
+
+                        if(dialog != null)
+                            dialog.cancel();
                     }
                 });
 
@@ -69,7 +72,7 @@ public class NewRecipeDialogFragment extends DialogFragment
         {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString()
-                    + " must implement NewRecipeDialogListener");
+                    + " must implement NewIngredientDialogListener");
         }
 
     }

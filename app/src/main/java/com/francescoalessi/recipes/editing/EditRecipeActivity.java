@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,7 +47,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class EditRecipeActivity extends AppCompatActivity implements View.OnClickListener
+public class EditRecipeActivity extends AppCompatActivity implements View.OnClickListener, NewIngredientDialogFragment.NewIngredientDialogListener
 {
 
     private EditText mRecipeNameEditText;
@@ -61,6 +63,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     private IngredientListAdapter mAdapter;
     private int mRecipeId;
     private Recipe recipeData;
+    private List<Ingredient> ingredientsData;
 
 
     @Override
@@ -131,6 +134,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
                     public void onChanged(List<Ingredient> ingredients)
                     {
                         mAdapter.setIngredients(ingredients);
+                        ingredientsData = ingredients;
                         if (ingredients != null && ingredients.size() <= 0)
                         {
                             mNoIngredientsTextView.setVisibility(View.VISIBLE);
@@ -171,7 +175,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             mRecipeNameEditText.setText(recipe.getRecipeName());
             mRecipeNameEditText.setSelection(mRecipeNameEditText.getText().length());
             loadThumbImage(recipe);
-            setTitle(recipe.getRecipeName());
+            setTitle("Editing " + recipe.getRecipeName()); // TODO: use string resources
         }
     }
 
@@ -234,7 +238,6 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
                 recipe.setRecipeImageUri(imageUri);
                 mEditRecipeViewModel.update(recipe);
             }
-
         }
     }
 
@@ -257,7 +260,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         else
             recipe = new Recipe("New Recipe");
 
-        if (!mRecipeNameEditText.getText().toString().equals(""))
+        if (recipe != null && !mRecipeNameEditText.getText().toString().equals(""))
             recipe.setRecipeName(mRecipeNameEditText.getText().toString());
 
         if (mRecipeId != -1)
@@ -277,13 +280,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
 
         if (view.getId() == R.id.btn_new_ingredient)
         {
-            //Launch add Ingredient activity;
-            Context context = view.getContext();
-
-            //start intent
-            Intent intent = new Intent(context, AddIngredientActivity.class);
-            intent.putExtra(MainActivity.EXTRA_RECIPE_ID, mRecipeId);
-            context.startActivity(intent);
+            launchEditDialogForId(-1);
         }
 
         if (view.getId() == R.id.btn_pick_image)
@@ -293,5 +290,49 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             intent.setType("image/*");
             startActivityForResult(intent, RequestCodes.PICK_IMAGE_REQUEST);
         }
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, final String ingredientName, final Float percent, int ingredientId)
+    { // TODO: Finish implementing this, add Ingredient modification functionality (Dialog fragment must handle editing ingredients, not just adding them)
+        // TODO: Pass arguments to fragment using setArguments instead of custom constructors (which is illegal)
+
+        boolean hasName = !ingredientName.equals("");
+        boolean hasPercent = percent != 0;
+        if(hasName && hasPercent && ingredientId == -1)
+        {
+            mEditRecipeViewModel.insert(new Ingredient(mRecipeId, ingredientName, percent));
+        }
+
+        if (hasName && hasPercent && ingredientId > -1)
+        {
+            final LiveData<Ingredient> liveIngredient = mEditRecipeViewModel.getIngredientById(ingredientId);
+            liveIngredient.observe(this, new Observer<Ingredient>() {
+                @Override
+                public void onChanged(Ingredient ingredient)
+                {
+                    liveIngredient.removeObserver(this);
+                    ingredient.setName(ingredientName);
+                    ingredient.setPercent(percent);
+                    mEditRecipeViewModel.update(ingredient);
+                }
+            });
+        }
+    }
+
+    public void launchEditDialogForId(int ingredientId, String ingredientName, float ingredientPercent)
+    {
+        DialogFragment newFragment = new NewIngredientDialogFragment();
+        Bundle arguments = new Bundle();
+        arguments.putInt("INGREDIENT_ID", ingredientId);
+        arguments.putString("INGREDIENT_NAME", ingredientName);
+        arguments.putFloat("INGREDIENT_PERCENT", ingredientPercent);
+        newFragment.setArguments(arguments);
+        newFragment.show(getSupportFragmentManager(), "newIngredient");
+    }
+
+    public void launchEditDialogForId(int ingredientId)
+    {
+        launchEditDialogForId(ingredientId, "", 0);
     }
 }
