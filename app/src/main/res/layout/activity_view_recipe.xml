@@ -8,89 +8,139 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="32dp"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_no_ingredients"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:padding="64dp"
-            android:text="@string/no_ingredients_yet"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/rv_ingredient_list"
-            app:layout_constraintEnd_toEndOf="@+id/rv_ingredient_list"
-            app:layout_constraintStart_toStartOf="@+id/rv_ingredient_list"
-            app:layout_constraintTop_toTopOf="@+id/rv_ingredient_list" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_ingredient_list"
+        <com.google.android.material.card.MaterialCardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cv_ingredients"
+            style="@style/Widget.MaterialComponents.CardView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_ingredients_label"
-            tools:layout_editor_absoluteX="0dp" />
-
-        <EditText
-            android:id="@+id/et_total_recipe_weight"
-            android:layout_width="218dp"
-            android:layout_height="51dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="28dp"
-            android:ems="10"
-            android:hint="@string/total_recipe_weight_hint"
-            android:inputType="number"
-            android:padding="16dp"
-            android:maxLength="15"
-            app:layout_constraintBottom_toBottomOf="@+id/total_weight_tv"
-            app:layout_constraintStart_toEndOf="@+id/total_weight_tv"
-            app:layout_constraintTop_toTopOf="@+id/total_weight_tv" />
-
-        <TextView
-            android:id="@+id/tv_ingredients_label"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="28dp"
-            android:text="@string/ingredients"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/mtrl_card_spacing"
+            android:layout_marginEnd="8dp"
+            card_view:cardUseCompatPadding="true"
+            app:cardElevation="4dp"
+            card_view:contentPaddingBottom="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_recipe_thumbnail"
-            android:layout_width="59dp"
-            android:layout_height="53dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/rv_ingredient_list"
-            app:layout_constraintEnd_toEndOf="@+id/tv_no_ingredients"
-            app:layout_constraintTop_toTopOf="@+id/tv_ingredients_label"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/ic_action_pick_image" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/total_weight_tv"
-            android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tv_ingredients_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/ingredients"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_recipe_thumbnail" />
+
+                <ImageView
+                    android:id="@+id/iv_recipe_thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_action_pick_image"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_no_ingredients"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/no_ingredients_yet"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="@+id/rv_ingredient_list"
+                    app:layout_constraintStart_toStartOf="@+id/rv_ingredient_list"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_ingredients_label" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_ingredient_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_ingredients_label"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    tools:layout_editor_absoluteX="0dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cv_make_recipe"
+            style="@style/Widget.MaterialComponents.CardView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/total_weight"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintStart_toStartOf="@+id/make_recipe_label_tv"
-            app:layout_constraintTop_toBottomOf="@+id/make_recipe_label_tv" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/mtrl_card_spacing"
+            android:layout_marginEnd="8dp"
+            card_view:contentPaddingBottom="16dp"
+            card_view:cardUseCompatPadding="true"
+            app:cardElevation="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/make_recipe_label_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/make_recipe"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintStart_toStartOf="@+id/tv_ingredients_label"
-            app:layout_constraintTop_toBottomOf="@+id/rv_ingredient_list" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/make_recipe_label_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/make_recipe"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/total_weight_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/total_weight"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintStart_toStartOf="@+id/make_recipe_label_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/make_recipe_label_tv" />
+
+                <EditText
+                    android:id="@+id/et_total_recipe_weight"
+                    android:layout_width="0dp"
+                    android:layout_height="51dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:ems="10"
+                    android:hint="@string/total_recipe_weight_hint"
+                    android:inputType="number"
+                    android:maxLength="15"
+                    android:padding="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/total_weight_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/total_weight_tv"
+                    app:layout_constraintTop_toTopOf="@+id/total_weight_tv" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>

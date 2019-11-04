@@ -38,8 +38,6 @@ public class RecipeRepository
 
     public LiveData<Ingredient> getIngredientById(int id) { return mRecipeDao.getIngredientById(id); }
 
-    public LiveData<Recipe> getLastAddedRecipe() { return mRecipeDao.getLastAddedRecipe(); }
-
     public long insert(final Recipe recipe)
     {
         Future<Long> future = AppExecutors.getInstance().diskIO().submit(new Callable<Long>()

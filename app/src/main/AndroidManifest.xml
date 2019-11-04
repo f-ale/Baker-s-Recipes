@@ -12,13 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".editing.AddIngredientActivity"
-            android:parentActivityName=".editing.EditRecipeActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.francescoalessi.recipes.editing.EditRecipeActivity" />
-        </activity>
-        <activity
             android:name=".editing.EditRecipeActivity"
             android:windowSoftInputMode="stateVisible"
             android:launchMode="singleTop">

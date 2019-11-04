@@ -23,11 +23,11 @@ public class Ingredient
     int recipeId;
 
     @NonNull
-    String name;
+    private String name;
 
     float percent;
 
-    public Ingredient(int recipeId, String name, float percent)
+    public Ingredient(int recipeId, @NonNull String name, float percent)
     {
         this.recipeId = recipeId;
         this.name = name;

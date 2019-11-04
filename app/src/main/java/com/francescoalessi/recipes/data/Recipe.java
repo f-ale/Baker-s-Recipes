@@ -26,7 +26,7 @@ public class Recipe
     }
 
     @Ignore
-    public Recipe(@NonNull int id, @NonNull String recipeName)
+    public Recipe(int id, @NonNull String recipeName)
     {
         this.id = id;
         this.mRecipeName = recipeName;

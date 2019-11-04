@@ -12,17 +12,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,9 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.francescoalessi.recipes.MainActivity;
@@ -111,7 +102,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
                 mNewIngredientButton.hide();
                 mPickImageButton.setVisibility(View.GONE);
                 mIngredientsLabel.setVisibility(View.GONE);
-                setTitle("New Recipe");
+                setTitle(getString(R.string.new_recipe));
             }
             else
             {
@@ -175,7 +166,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             mRecipeNameEditText.setText(recipe.getRecipeName());
             mRecipeNameEditText.setSelection(mRecipeNameEditText.getText().length());
             loadThumbImage(recipe);
-            setTitle("Editing " + recipe.getRecipeName()); // TODO: use string resources
+            setTitle(getString(R.string.editing_recipe_title, recipe.getRecipeName()));
         }
     }
 
@@ -258,7 +249,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             setResult(mRecipeId);
         }
         else
-            recipe = new Recipe("New Recipe");
+            recipe = new Recipe(getString(R.string.new_recipe));
 
         if (recipe != null && !mRecipeNameEditText.getText().toString().equals(""))
             recipe.setRecipeName(mRecipeNameEditText.getText().toString());
@@ -294,9 +285,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, final String ingredientName, final Float percent, int ingredientId)
-    { // TODO: Finish implementing this, add Ingredient modification functionality (Dialog fragment must handle editing ingredients, not just adding them)
-        // TODO: Pass arguments to fragment using setArguments instead of custom constructors (which is illegal)
-
+    {
         boolean hasName = !ingredientName.equals("");
         boolean hasPercent = percent != 0;
         if(hasName && hasPercent && ingredientId == -1)

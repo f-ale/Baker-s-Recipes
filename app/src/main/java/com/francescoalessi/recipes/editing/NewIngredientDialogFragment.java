@@ -5,11 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -17,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.francescoalessi.recipes.R;
+import com.francescoalessi.recipes.utils.RecipeUtils;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class NewIngredientDialogFragment extends DialogFragment
 {
@@ -34,10 +34,10 @@ public class NewIngredientDialogFragment extends DialogFragment
     {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_new_ingredient, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setView(dialogView)
-                .setTitle("New Ingredient")
-                .setPositiveButton("Add Ingredient", new DialogInterface.OnClickListener()
+                .setTitle(R.string.new_recipe)
+                .setPositiveButton(R.string.add_ingredient, new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i)
@@ -58,7 +58,7 @@ public class NewIngredientDialogFragment extends DialogFragment
                             String ingredientName = ingredientNameEditText.getText().toString();
                             if(!ingredientPercentString.equals("") && !ingredientName.equals(""))
                             {
-                                Float ingredientPercent = Float.parseFloat(ingredientPercentString); // TODO: Input checks
+                                Float ingredientPercent = Float.parseFloat(ingredientPercentString);
                                 listener.onDialogPositiveClick(NewIngredientDialogFragment.this, ingredientName, ingredientPercent, ingredientId);
                             }
                         }
@@ -97,9 +97,9 @@ public class NewIngredientDialogFragment extends DialogFragment
                 int ingredientId = arguments.getInt("INGREDIENT_ID");
                 if(ingredientId != -1)
                 {
-                    Log.d("FRAGMENT", arguments.getString("INGREDIENT_NAME"));
                     ingredientNameEditText.setText(arguments.getString("INGREDIENT_NAME"));
-                    ingredientPercentEditText.setText("" + arguments.getFloat("INGREDIENT_PERCENT")); // TODO: Use string.format
+                    float percent = arguments.getFloat("INGREDIENT_PERCENT");
+                    ingredientPercentEditText.setText(RecipeUtils.getFormattedIngredientPercent(percent, false));
                 }
             }
         }

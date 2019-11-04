@@ -38,6 +38,7 @@ import com.francescoalessi.recipes.editing.model.EditRecipeViewModel;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModelFactory;
 import com.francescoalessi.recipes.utils.RecipeUtils;
 import com.francescoalessi.recipes.utils.RequestCodes;
+import com.google.android.material.card.MaterialCardView;
 
 import java.io.IOException;
 import java.util.List;
@@ -56,6 +57,7 @@ public class ViewRecipeActivity extends AppCompatActivity
     private ImageView mRecipeThumbnailImageView;
     private TextView mNoIngredientsTextView;
     private TextWatcher mTotalWeightTextWatcher;
+    private View mMakeRecipeCardView;
 
     private Recipe mRecipeData;
     private List<Ingredient> mIngredientsData;
@@ -78,6 +80,7 @@ public class ViewRecipeActivity extends AppCompatActivity
         Log.d("VIEWRECIPE", "onCreate");
 
         mNoIngredientsTextView = findViewById(R.id.tv_no_ingredients);
+        mMakeRecipeCardView = findViewById(R.id.cv_make_recipe);
 
         Intent intent = getIntent();
 
@@ -98,16 +101,10 @@ public class ViewRecipeActivity extends AppCompatActivity
         mTotalWeightTextWatcher = new TextWatcher()
         {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable)
@@ -192,9 +189,16 @@ public class ViewRecipeActivity extends AppCompatActivity
                 mAdapter.setIngredients(ingredients);
                 mIngredientsData = ingredients;
                 if (ingredients.size() == 0)
+                {
                     mNoIngredientsTextView.setVisibility(View.VISIBLE);
+                    mMakeRecipeCardView.setVisibility(View.GONE);
+                }
+
                 else
-                    mNoIngredientsTextView.setVisibility(View.INVISIBLE);
+                {
+                    mNoIngredientsTextView.setVisibility(View.GONE);
+                    mMakeRecipeCardView.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -271,14 +275,14 @@ public class ViewRecipeActivity extends AppCompatActivity
 
                 String totalWeightString = mTotalWeightEditText.getText().toString();
 
-                if (totalWeightString != null && !totalWeightString.equals(""))
+                if (!totalWeightString.equals(""))
                     totalWeight = Float.parseFloat(totalWeightString);
                 else
                     totalWeight = 0;
 
                 if (calculateQuantities)
                 {
-                    recipe = recipe.concat("Makes " + Math.round(totalWeight) + "g\n\n");
+                    recipe = recipe.concat(getString(R.string.makes_weight_grams,Math.round(totalWeight)) + "\n\n");
                 }
 
                 for (Ingredient i : ingredients)
@@ -291,7 +295,7 @@ public class ViewRecipeActivity extends AppCompatActivity
                                 (percentSum, totalWeight, i.getPercent());
                     }
                     else
-                        ingredientString = RecipeUtils.getFormattedIngredientPercent(i.getPercent());
+                        ingredientString = RecipeUtils.getFormattedIngredientPercent(i.getPercent(), true);
                     recipe = recipe.concat(i.getName() + " " + ingredientString + "\n");
                 }
 
@@ -303,7 +307,7 @@ public class ViewRecipeActivity extends AppCompatActivity
             sendIntent.putExtra(Intent.EXTRA_TEXT, recipe);
             sendIntent.setType("text/plain");
 
-            Intent shareIntent = Intent.createChooser(sendIntent, "Share Recipe");
+            Intent shareIntent = Intent.createChooser(sendIntent, getString(R.string.share_recipe));
             startActivity(shareIntent);
 
             return true;

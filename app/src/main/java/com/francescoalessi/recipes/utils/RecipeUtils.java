@@ -32,20 +32,28 @@ public class RecipeUtils
             return oneDecimal.format(weight) + "g"; // TODO: change this to use String.format to parse float
     }
 
-    public static String getFormattedIngredientPercent(float percent)
+    public static String getFormattedIngredientPercent(float percent, boolean addPercentSign)
+    {
+        if(addPercentSign)
+            return getFormattedIngredientPercent(percent) + "%";
+        else
+            return getFormattedIngredientPercent(percent);
+    }
+
+    private static String getFormattedIngredientPercent(float percent)
     {
         DecimalFormat oneDecimal = new DecimalFormat("#.#");
+        DecimalFormat wholeNumber = new DecimalFormat("#");
 
         if (percent == Math.round(percent))
-            return Math.round(percent) + "%"; // TODO: change this to use String.format to parse float
+            return wholeNumber.format(percent); // TODO: change this to use String.format to parse float
         else
-            return oneDecimal.format(percent) + "%"; // TODO: change this to use String.format to parse float
+            return oneDecimal.format(percent); // TODO: change this to use String.format to parse float
     }
 
     public static float getIngredientWeight(float percentSum, float totalWeight, float ingredientPercent)
     {
-        float weight = ((ingredientPercent / percentSum) * totalWeight);
-        return weight;
+        return ((ingredientPercent / percentSum) * totalWeight);
     }
 
     public static float getPercentSum(List<Ingredient> ingredientList)

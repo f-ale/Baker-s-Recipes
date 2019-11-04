@@ -3,15 +3,21 @@
     <string name="ingredient_name">Ingredient Name</string>
     <string name="percent">Percent</string>
     <string name="percent_symbol">%</string>
-    <string name="add_ingredient">Add Ingredient</string>
+    <string name="add_ingredient">Add</string>
     <string name="recipe_name_hint">Recipe name…</string>
     <string name="ingredients">Ingredients</string>
-    <string name="create_recipe">Create Recipe</string>
+    <string name="create_recipe">Create</string>
     <string name="no_ingredients_yet">No ingredients yet. Add some!</string>
     <string name="total_recipe_weight_hint">Total recipe weight…</string>
     <string name="total_weight">Total weight:</string>
     <string name="make_recipe">Make Recipe</string>
     <string name="recipe_thumbnail_desc">Recipe Thumbnail</string>
     <string name="ingredient_name_hint">Ingredient name…</string>
-    <string name="ingredient_percent_hint">Ingredient percent...</string>
+    <string name="ingredient_percent_hint">Ingredient percent…</string>
+    <string name="editing_recipe_title">Editing %1$s</string>
+    <string name="new_recipe">New Recipe</string>
+    <string name="makes_weight_grams">Makes %1$dg</string>
+    <string name="share_recipe">Share Recipe</string>
+    <string name="no_ingredient">No ingredient</string>
+    <string name="no_recipe">No recipe</string>
 </resources>

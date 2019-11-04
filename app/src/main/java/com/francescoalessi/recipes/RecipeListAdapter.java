@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.francescoalessi.recipes.data.Recipe;
 import com.francescoalessi.recipes.editing.EditRecipeActivity;
 import com.francescoalessi.recipes.utils.RecipeUtils;
@@ -53,7 +54,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         }
         else
         {
-            holder.mRecipeNameTextView.setText("No recipe");
+            holder.mRecipeNameTextView.setText(R.string.no_recipe);
         }
 
     }
@@ -67,6 +68,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             Glide.with(view.getContext()).load(uri)
                     .placeholder(R.drawable.ic_action_pick_image)
                     .centerCrop()
+                    .apply(RequestOptions.circleCropTransform())
                     .into(view);
         }
         else
@@ -94,13 +96,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
-        public final TextView mRecipeNameTextView;
-        public final ImageView mRecipeThumbnailImageView;
+        private final TextView mRecipeNameTextView;
+        private final ImageView mRecipeThumbnailImageView;
 
         final RecipeListAdapter mAdapter;
 
 
-        public RecipeViewHolder(@NonNull View itemView, RecipeListAdapter adapter)
+        private RecipeViewHolder(@NonNull View itemView, RecipeListAdapter adapter)
         {
             super(itemView);
 

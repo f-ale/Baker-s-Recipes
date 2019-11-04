@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.francescoalessi.recipes.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class NewRecipeDialogFragment extends DialogFragment
 {
@@ -29,10 +30,10 @@ public class NewRecipeDialogFragment extends DialogFragment
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
     {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setView(inflater.inflate(R.layout.dialog_new_recipe, null))
-                .setTitle("New Recipe")
-                .setPositiveButton("Create Recipe", new DialogInterface.OnClickListener()
+                .setTitle(R.string.new_recipe)
+                .setPositiveButton(R.string.create_recipe, new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i)

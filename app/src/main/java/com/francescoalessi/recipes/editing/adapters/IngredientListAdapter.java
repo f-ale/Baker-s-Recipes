@@ -1,27 +1,20 @@
 package com.francescoalessi.recipes.editing.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.francescoalessi.recipes.MainActivity;
 import com.francescoalessi.recipes.R;
 import com.francescoalessi.recipes.data.Ingredient;
-import com.francescoalessi.recipes.data.comparators.CompareIngredientPercent;
-import com.francescoalessi.recipes.editing.AddIngredientActivity;
 import com.francescoalessi.recipes.editing.EditRecipeActivity;
 import com.francescoalessi.recipes.utils.RecipeUtils;
 
-import java.text.DecimalFormat;
-import java.util.Collections;
 import java.util.List;
 
 public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAdapter.IngredientViewHolder>
@@ -29,13 +22,15 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
     private List<Ingredient> mIngredientList;
     private LayoutInflater mInflater;
-    public boolean editMode = true;
-    public boolean calculateQuantities = false;
-    private Float totalWeigth;
+    private boolean editMode = true;
+    private boolean calculateQuantities = false;
+    private Float totalWeight;
+    private Context context;
 
     public IngredientListAdapter(Context context, boolean editMode)
     {
         onInstantiate(context);
+        this.context = context;
         this.editMode = editMode;
     }
 
@@ -51,10 +46,9 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         return percentSum;
     }
 
-    private float getIngredientWeight(float totalWeigth, float percentSum, Ingredient ingredient)
+    private float getIngredientWeight(float totalWeight, float percentSum, Ingredient ingredient)
     {
-        float weight = ((ingredient.getPercent() / percentSum) * totalWeigth);
-        return weight;
+        return ((ingredient.getPercent() / percentSum) * totalWeight);
     }
 
     public IngredientListAdapter(Context context)
@@ -85,20 +79,20 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
             if (!calculateQuantities)
             {
-                String percentString = RecipeUtils.getFormattedIngredientPercent(mCurrent.getPercent());
+                String percentString = RecipeUtils.getFormattedIngredientPercent(mCurrent.getPercent(), true);
                 holder.mIngredientPercentTextView.setText(percentString);
             }
             else
             {
                 float percentSum = getPercentSum(mIngredientList);
 
-                String weightString = RecipeUtils.getFormattedIngredientWeight(percentSum, totalWeigth, mCurrent.getPercent());
+                String weightString = RecipeUtils.getFormattedIngredientWeight(percentSum, totalWeight, mCurrent.getPercent());
                 holder.mIngredientPercentTextView.setText(weightString);
             }
         }
         else
         {
-            holder.mIngredientNameTextView.setText("No ingredient");
+            holder.mIngredientNameTextView.setText(context.getString(R.string.no_ingredient));
         }
     }
 
@@ -120,10 +114,10 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
     }
 
-    public void calculateQuantities(float totalWeigth)
+    public void calculateQuantities(float totalWeight)
     {
         calculateQuantities = true;
-        this.totalWeigth = totalWeigth;
+        this.totalWeight = totalWeight;
         notifyDataSetChanged();
     }
 
@@ -135,14 +129,14 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
     class IngredientViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
-        public final TextView mIngredientNameTextView;
-        public final TextView mIngredientPercentTextView;
-        public final AppCompatImageButton mEditIngredientButton;
+        private final TextView mIngredientNameTextView;
+        private final TextView mIngredientPercentTextView;
+        private final AppCompatImageButton mEditIngredientButton;
 
         IngredientListAdapter mAdapter;
 
 
-        public IngredientViewHolder(@NonNull View itemView, IngredientListAdapter adapter)
+        private IngredientViewHolder(@NonNull View itemView, IngredientListAdapter adapter)
         {
             super(itemView);
 
@@ -175,13 +169,6 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
                 EditRecipeActivity activity = (EditRecipeActivity) context;
                 activity.launchEditDialogForId(ingredient.getId(), ingredient.getName(), ingredient.getPercent());
             }
-        }
-
-        private void editIngredient(Ingredient ingredient, Context context)
-        {
-            Intent intent = new Intent(context, AddIngredientActivity.class);
-            intent.putExtra(MainActivity.EXTRA_INGREDIENT_ID, ingredient.getId());
-            context.startActivity(intent);
         }
     }
 }

@@ -16,10 +16,9 @@ public class EditRecipeViewModel extends AndroidViewModel
 
     private RecipeRepository mRepository;
     private LiveData<Recipe> mRecipe;
-    private LiveData<Ingredient> mIngredient;
     private LiveData<List<Ingredient>> mRecipeIngredients;
 
-    public EditRecipeViewModel(Application application, int recipeId)
+    EditRecipeViewModel(Application application, int recipeId)
     {
         super(application);
         mRepository = new RecipeRepository(application);
