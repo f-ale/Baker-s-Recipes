@@ -15,15 +15,16 @@
         android:paddingBottom="32dp"
         android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cv_ingredients"
-            style="@style/Widget.MaterialComponents.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/mtrl_card_spacing"
             android:layout_marginEnd="8dp"
             card_view:cardUseCompatPadding="true"
+            card_view:cardCornerRadius="6dp"
             app:cardElevation="4dp"
             card_view:contentPaddingBottom="16dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,12 +79,11 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cv_make_recipe"
-            style="@style/Widget.MaterialComponents.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -94,7 +94,8 @@
             app:cardElevation="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintEnd_toEndOf="parent">
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:cardCornerRadius="6dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -140,7 +141,7 @@
                     app:layout_constraintTop_toTopOf="@+id/total_weight_tv" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>

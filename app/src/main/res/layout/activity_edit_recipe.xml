@@ -12,17 +12,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
 
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/cv_edit_recipe"
-            style="@style/Widget.MaterialComponents.CardView"
             android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/mtrl_card_spacing"
             android:layout_marginEnd="8dp"
             card_view:contentPaddingBottom="16dp"
             card_view:cardUseCompatPadding="true"
+            card_view:cardCornerRadius="6dp"
             app:cardElevation="4dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,7 +112,7 @@
                     app:srcCompat="@drawable/ic_action_pick_image" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
 
     </ScrollView>
