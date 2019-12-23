@@ -36,7 +36,7 @@ public class NewIngredientDialogFragment extends DialogFragment
         View dialogView = inflater.inflate(R.layout.dialog_new_ingredient, null);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setView(dialogView)
-                .setTitle(R.string.new_recipe)
+                .setTitle(R.string.new_ingredient)
                 .setPositiveButton(R.string.add_ingredient, new DialogInterface.OnClickListener()
                 {
                     @Override
@@ -99,7 +99,7 @@ public class NewIngredientDialogFragment extends DialogFragment
                 {
                     ingredientNameEditText.setText(arguments.getString("INGREDIENT_NAME"));
                     float percent = arguments.getFloat("INGREDIENT_PERCENT");
-                    ingredientPercentEditText.setText(RecipeUtils.getFormattedIngredientPercent(percent, false));
+                    ingredientPercentEditText.setText(RecipeUtils.getFormattedIngredientPercent(percent,null));
                 }
             }
         }

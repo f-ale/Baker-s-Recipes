@@ -3,6 +3,10 @@ package com.francescoalessi.recipes;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -17,18 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.francescoalessi.recipes.data.Recipe;
-import com.francescoalessi.recipes.editing.EditRecipeActivity;
 import com.francescoalessi.recipes.utils.RecipeUtils;
 
-import java.io.IOException;
 import java.util.List;
 
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeViewHolder>
 {
-
     private List<Recipe> mRecipeList;
     private LayoutInflater mInflater;
-    private Context context;
 
     public RecipeListAdapter(Context context)
     {
@@ -56,7 +56,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         {
             holder.mRecipeNameTextView.setText(R.string.no_recipe);
         }
-
     }
 
     private void loadThumbImage(Recipe recipe, ImageView view) // TODO: Code reused with copy\paste, abstract instead
@@ -72,8 +71,14 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                     .into(view);
         }
         else
-            view.setImageResource(R.drawable.ic_action_pick_image);
-
+        {
+            Drawable[] drawables = {new ColorDrawable(RecipeUtils.stringToColor(recipe.getRecipeName())), view.getContext().getResources().getDrawable(R.drawable.ic_chefhat_small)};
+            LayerDrawable drawable = new LayerDrawable(drawables);
+            Glide.with(view.getContext()).load(drawable)
+                    .fitCenter()
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(view);
+        }
     }
 
     public void setRecipes(List<Recipe> recipes)
@@ -100,7 +105,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         private final ImageView mRecipeThumbnailImageView;
 
         final RecipeListAdapter mAdapter;
-
 
         private RecipeViewHolder(@NonNull View itemView, RecipeListAdapter adapter)
         {

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -43,9 +44,8 @@ import com.google.android.material.card.MaterialCardView;
 import java.io.IOException;
 import java.util.List;
 
-public class ViewRecipeActivity extends AppCompatActivity
+public class ViewRecipeActivity extends AppCompatActivity implements View.OnClickListener
 {
-
     private EditRecipeViewModel mEditRecipeViewModel;
     private LiveData<Recipe> mRecipe;
     private LiveData<List<Ingredient>> mIngredientList;
@@ -80,6 +80,7 @@ public class ViewRecipeActivity extends AppCompatActivity
         Log.d("VIEWRECIPE", "onCreate");
 
         mNoIngredientsTextView = findViewById(R.id.tv_no_ingredients);
+        mNoIngredientsTextView.setOnClickListener(this);
         mMakeRecipeCardView = findViewById(R.id.cv_make_recipe);
 
         Intent intent = getIntent();
@@ -143,6 +144,8 @@ public class ViewRecipeActivity extends AppCompatActivity
         if (recipe != null)
         {
             setTitle(recipe.getRecipeName());
+            ImageView mColorLip = findViewById(R.id.iv_color_lip);
+            mColorLip.setImageDrawable(new ColorDrawable(RecipeUtils.stringToColor(recipe.getRecipeName())));
             loadThumbImage(recipe);
         }
     }
@@ -160,6 +163,10 @@ public class ViewRecipeActivity extends AppCompatActivity
                         .into(mRecipeThumbnailImageView);
 
                 mRecipeThumbnailImageView.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mRecipeThumbnailImageView.setVisibility(View.GONE);
             }
         }
     }
@@ -242,17 +249,22 @@ public class ViewRecipeActivity extends AppCompatActivity
         return true;
     }
 
+    private void startEditActivity()
+    {
+        Context context = this;
+
+        //start intent
+        Intent intent = new Intent(context, EditRecipeActivity.class);
+        intent.putExtra(MainActivity.EXTRA_RECIPE_ID, mRecipeId);
+        startActivityForResult(intent, RequestCodes.EDIT_RECIPE_REQUEST);
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item)
     {
         if (item.getItemId() == R.id.action_edit)
         {
-            Context context = this;
-
-            //start intent
-            Intent intent = new Intent(context, EditRecipeActivity.class);
-            intent.putExtra(MainActivity.EXTRA_RECIPE_ID, mRecipeId);
-            startActivityForResult(intent, RequestCodes.EDIT_RECIPE_REQUEST);
+            startEditActivity();
             return true;
         }
 
@@ -295,7 +307,12 @@ public class ViewRecipeActivity extends AppCompatActivity
                                 (percentSum, totalWeight, i.getPercent());
                     }
                     else
+                    {
                         ingredientString = RecipeUtils.getFormattedIngredientPercent(i.getPercent(), true);
+                        Log.d("SHARE", i.getPercent() + "; " + RecipeUtils.getFormattedIngredientPercent(i.getPercent(), true));
+                    }
+
+
                     recipe = recipe.concat(i.getName() + " " + ingredientString + "\n");
                 }
 
@@ -328,5 +345,11 @@ public class ViewRecipeActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        startEditActivity();
     }
 }

@@ -14,6 +14,7 @@
 
 
         <androidx.cardview.widget.CardView
+            card_view:cardBackgroundColor="@color/color_surface"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/cv_edit_recipe"
@@ -77,7 +78,7 @@
                     android:id="@+id/rv_ingredient_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintTop_toBottomOf="@+id/tv_ingredients_label"
                     tools:layout_editor_absoluteX="0dp" />
 
@@ -110,6 +111,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_action_pick_image" />
+
+                <Switch
+                    android:id="@+id/btn_weight_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="2dp"
+                    android:showText="true"
+                    android:switchPadding="4dp"
+                    android:text="Use "
+                    android:textOff="%"
+                    android:textOn="g"
+                    app:layout_constraintEnd_toEndOf="@+id/et_recipe"
+                    app:layout_constraintTop_toTopOf="@+id/tv_ingredients_label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

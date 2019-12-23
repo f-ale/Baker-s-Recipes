@@ -16,8 +16,10 @@
     <string name="ingredient_percent_hint">Ingredient percent…</string>
     <string name="editing_recipe_title">Editing %1$s</string>
     <string name="new_recipe">New Recipe</string>
+    <string name="new_ingredient">New Ingredient</string>
     <string name="makes_weight_grams">Makes %1$dg</string>
     <string name="share_recipe">Share Recipe</string>
     <string name="no_ingredient">No ingredient</string>
     <string name="no_recipe">No recipe</string>
+    <string name="tap_to_add_recipe">Tap + to create a recipe.</string>
 </resources>

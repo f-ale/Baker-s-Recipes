@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.francescoalessi.recipes.data.Recipe;
 import com.francescoalessi.recipes.editing.EditRecipeActivity;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 {
 
     private RecyclerView mRecyclerView;
+    private TextView mNoRecipeTextView;
     private RecipeListAdapter mAdapter;
     private RecipeViewModel mRecipeViewModel;
 
@@ -49,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        mNoRecipeTextView = findViewById(R.id.tv_no_recipes);
+        mNoRecipeTextView.setOnClickListener(this);
+
         mFAB = findViewById(R.id.fab);
         mFAB.setOnClickListener(this);
 
@@ -62,7 +67,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mAdapter.setRecipes(recipes);
 
                 if (recipes != null && recipes.size() > 0)
+                {
                     mLastAddedRecipe = recipes.get(recipes.size() - 1);
+                    mNoRecipeTextView.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    mNoRecipeTextView.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+
             }
         });
 
@@ -89,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view)
     {
-        if (view.getId() == R.id.fab)
+        if (view.getId() == R.id.fab || view.getId() == R.id.tv_no_recipes)
         {
             DialogFragment newFragment = new NewRecipeDialogFragment();
             newFragment.show(getSupportFragmentManager(), "newRecipe");

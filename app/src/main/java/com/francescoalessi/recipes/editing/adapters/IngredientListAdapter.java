@@ -24,6 +24,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     private LayoutInflater mInflater;
     private boolean editMode = true;
     private boolean calculateQuantities = false;
+    private boolean byWeight = false;
     private Float totalWeight;
     private Context context;
 
@@ -32,23 +33,6 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         onInstantiate(context);
         this.context = context;
         this.editMode = editMode;
-    }
-
-    private float getPercentSum(List<Ingredient> ingredientList)
-    {
-        float percentSum = 0;
-
-        for (Ingredient ingredient : ingredientList)
-        {
-            percentSum += ingredient.getPercent();
-        }
-
-        return percentSum;
-    }
-
-    private float getIngredientWeight(float totalWeight, float percentSum, Ingredient ingredient)
-    {
-        return ((ingredient.getPercent() / percentSum) * totalWeight);
     }
 
     public IngredientListAdapter(Context context)
@@ -77,15 +61,27 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
             Ingredient mCurrent = mIngredientList.get(position);
             holder.mIngredientNameTextView.setText(mCurrent.getName());
 
+            String suffix;
+            if(byWeight)
+                suffix = "g";
+            else
+                suffix = "%";
+
             if (!calculateQuantities)
             {
-                String percentString = RecipeUtils.getFormattedIngredientPercent(mCurrent.getPercent(), true);
+                float maxIngredientPercent = RecipeUtils.getMaxIngredientPercent(mIngredientList);
+                String percentString;
+
+                if(!editMode)
+                    percentString = RecipeUtils.getFormattedIngredientPercent(maxIngredientPercent, mCurrent.getPercent(), suffix);
+                else
+                    percentString = RecipeUtils.getFormattedIngredientPercent(mCurrent.getPercent(), suffix);
+
                 holder.mIngredientPercentTextView.setText(percentString);
             }
             else
             {
-                float percentSum = getPercentSum(mIngredientList);
-
+                float percentSum = RecipeUtils.getPercentSum(mIngredientList);
                 String weightString = RecipeUtils.getFormattedIngredientWeight(percentSum, totalWeight, mCurrent.getPercent());
                 holder.mIngredientPercentTextView.setText(weightString);
             }
@@ -124,6 +120,12 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     public void showPercent()
     {
         calculateQuantities = false;
+        notifyDataSetChanged();
+    }
+
+    public void switchRepresentation()
+    {
+        byWeight = !byWeight;
         notifyDataSetChanged();
     }
 

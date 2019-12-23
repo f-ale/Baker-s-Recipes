@@ -21,8 +21,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -33,12 +35,12 @@ import com.francescoalessi.recipes.data.Recipe;
 import com.francescoalessi.recipes.editing.adapters.IngredientListAdapter;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModel;
 import com.francescoalessi.recipes.editing.model.EditRecipeViewModelFactory;
+import com.francescoalessi.recipes.utils.RecipeUtils;
 import com.francescoalessi.recipes.utils.RequestCodes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.List;
 
-public class EditRecipeActivity extends AppCompatActivity implements View.OnClickListener, NewIngredientDialogFragment.NewIngredientDialogListener
+public class EditRecipeActivity extends AppCompatActivity implements View.OnClickListener, NewIngredientDialogFragment.NewIngredientDialogListener, CompoundButton.OnCheckedChangeListener
 {
 
     private EditText mRecipeNameEditText;
@@ -78,6 +80,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         mNewIngredientButton.setOnClickListener(this);
 
         mNoIngredientsTextView = findViewById(R.id.tv_no_ingredients);
+        mNoIngredientsTextView.setOnClickListener(this);
         mIngredientsLabel = findViewById(R.id.tv_ingredients_label);
 
         mPickImageButton = findViewById(R.id.btn_pick_image);
@@ -87,6 +90,9 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         mAdapter = new IngredientListAdapter(this);
         mIngredientsRecyclerView.setAdapter(mAdapter);
         mIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        Switch mSwitch = findViewById(R.id.btn_weight_switch);
+        mSwitch.setOnCheckedChangeListener(this);
 
         Intent intent = getIntent();
 
@@ -212,16 +218,21 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
+    public void onBackPressed()
+    {
+        saveAndFinish(mRecipeId != -1);
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RequestCodes.PICK_IMAGE_REQUEST && data != null && data.getData() != null)
         {
             Uri imageUri = data.getData();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            {
-                getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            }
+            getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
             Recipe recipe = mRecipe.getValue();
 
             if (recipe != null)
@@ -242,6 +253,8 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
 
     private void saveChanges()
     {
+        updateAllPercentages();
+
         Recipe recipe;
         if (mRecipeId != -1)
         {
@@ -260,6 +273,16 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             mEditRecipeViewModel.insert(recipe);
     }
 
+    private void updateAllPercentages()
+    {
+        List<Ingredient> ingredients = ingredientsData;
+        float maxIngredientPercent = RecipeUtils.getMaxIngredientPercent(ingredientsData);
+        for(Ingredient ingredient : ingredients)
+        {
+            ingredient.setPercent(RecipeUtils.getIngredientPercent(maxIngredientPercent, ingredient.getPercent()));
+            mEditRecipeViewModel.update(ingredient);
+        }
+    }
     @Override
     public void onClick(View view)
     {
@@ -269,7 +292,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
             finish();
         }
 
-        if (view.getId() == R.id.btn_new_ingredient)
+        if (view.getId() == R.id.btn_new_ingredient || view.getId() == R.id.tv_no_ingredients)
         {
             launchEditDialogForId(-1);
         }
@@ -323,5 +346,11 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     public void launchEditDialogForId(int ingredientId)
     {
         launchEditDialogForId(ingredientId, "", 0);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+    {
+        mAdapter.switchRepresentation();
     }
 }
