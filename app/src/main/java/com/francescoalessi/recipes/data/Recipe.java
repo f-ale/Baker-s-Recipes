@@ -38,8 +38,6 @@ public class Recipe
 
     public void setRecipeImageUri(Uri newUri) { this.recipeImageUri = newUri; }
 
-    ;
-
     public String getRecipeName()
     {
         return this.mRecipeName;

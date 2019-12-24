@@ -110,7 +110,8 @@
                     android:scaleType="fitCenter"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_action_pick_image" />
+                    app:srcCompat="@drawable/ic_action_pick_image"
+                    android:contentDescription="Pick an Image" />
 
                 <Switch
                     android:id="@+id/btn_weight_switch"

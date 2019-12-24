@@ -5,8 +5,6 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-import java.util.Comparator;
-
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "ingredient_table", foreignKeys = @ForeignKey(entity = Recipe.class,
