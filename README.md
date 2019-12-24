@@ -14,6 +14,7 @@ Baker's Recipes is built with Android Architecture Components (Room, LiveData, V
     * LiveData
     * Room
     * ViewModel
+ * Glide
 
 ## License
 
