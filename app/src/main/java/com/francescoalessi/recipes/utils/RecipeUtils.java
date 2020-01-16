@@ -1,6 +1,10 @@
 package com.francescoalessi.recipes.utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+
+import androidx.preference.PreferenceManager;
 
 import com.francescoalessi.recipes.data.Ingredient;
 
@@ -9,7 +13,6 @@ import java.util.List;
 
 public class RecipeUtils
 {
-
     public static int stringToColor(String string)
     {
         int hash = string.hashCode();
@@ -25,19 +28,30 @@ public class RecipeUtils
         return Color.HSVToColor(hsv);
     }
 
-    public static String getFormattedIngredientWeight(float percentSum, float totalWeight, float ingredientPercent)
+    public static String getLocalizedWeightSuffix(Context context)
     {
-        float weight = getIngredientWeight(percentSum, totalWeight, ingredientPercent);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String unit = sharedPreferences.getString("weight_unit", "grams");
+
+        if(unit.equals("ounces"))
+            return "oz";
+        else
+            return "g";
+    }
+
+    public static String getFormattedIngredientWeight(double percentSum, double totalWeight, double ingredientPercent, String suffix)
+    {
+        double weight = getIngredientWeight(percentSum, totalWeight, ingredientPercent);
 
         DecimalFormat oneDecimal = new DecimalFormat("#.#");
 
         if (weight == Math.round(weight))
-            return Math.round(weight) + "g"; // TODO: change this to use String.format to parse float
+            return Math.round(weight) + suffix; // TODO: change this to use String.format to parse float
         else
-            return oneDecimal.format(weight) + "g"; // TODO: change this to use String.format to parse float
+            return oneDecimal.format(weight) + suffix; // TODO: change this to use String.format to parse float
     }
 
-    public static String getFormattedIngredientPercent(float percent, boolean addPercent)
+    public static String getFormattedIngredientPercent(double percent, boolean addPercent)
     {
         if(addPercent)
             return getFormattedIngredientPercent(percent, "%");
@@ -45,17 +59,17 @@ public class RecipeUtils
             return getFormattedIngredientPercent(percent);
     }
 
-    public static String getFormattedIngredientPercent(float maxIngredientPercent, float percent, String suffix)
+    public static String getFormattedIngredientPercent(double maxIngredientPercent, double percent, String suffix)
     {
         return getFormattedIngredientPercent(maxIngredientPercent, percent) + suffix;
     }
 
-    public static String getFormattedIngredientPercent(float percent, String suffix)
+    public static String getFormattedIngredientPercent(double percent, String suffix)
     {
         return getFormattedIngredientPercent(percent) + suffix;
     }
 
-    private static String getFormattedIngredientPercent(float percent)
+    private static String getFormattedIngredientPercent(double percent)
     {
         DecimalFormat oneDecimal = new DecimalFormat("#.#");
         DecimalFormat wholeNumber = new DecimalFormat("#");
@@ -66,7 +80,7 @@ public class RecipeUtils
             return oneDecimal.format(percent); // TODO: change this to use String.format to parse float
     }
 
-    private static String getFormattedIngredientPercent(float maxIngredientPercent, float percent)
+    private static String getFormattedIngredientPercent(double maxIngredientPercent, double percent)
     {
         percent = getIngredientPercent(maxIngredientPercent, percent);
         DecimalFormat oneDecimal = new DecimalFormat("#.#");
@@ -78,19 +92,19 @@ public class RecipeUtils
             return oneDecimal.format(percent); // TODO: change this to use String.format to parse float
     }
 
-    public static float getIngredientWeight(float percentSum, float totalWeight, float ingredientPercent)
+    public static double getIngredientWeight(double percentSum, double totalWeight, double ingredientPercent)
     {
         return ((ingredientPercent / percentSum) * totalWeight);
     }
 
-    public static float getIngredientPercent(float maxIngredientPercent, float ingredientPercent)
+    public static double getIngredientPercent(double maxIngredientPercent, double ingredientPercent)
     {
         return ((ingredientPercent / maxIngredientPercent)) * 100;
     }
 
-    public static float getPercentSum(List<Ingredient> ingredientList)
+    public static double getPercentSum(List<Ingredient> ingredientList)
     {
-        float percentSum = 0;
+        double percentSum = 0;
 
         for (Ingredient ingredient : ingredientList)
         {
@@ -100,13 +114,13 @@ public class RecipeUtils
         return percentSum;
     }
 
-    public static float getMaxIngredientPercent(List<Ingredient> ingredientList)
+    public static double getMaxIngredientPercent(List<Ingredient> ingredientList)
     {
-        float maxIngredientPercent = 0;
+        double maxIngredientPercent = 0;
 
         for (Ingredient ingredient : ingredientList)
         {
-            float percent =  ingredient.getPercent();
+            double percent =  ingredient.getPercent();
 
             if(maxIngredientPercent < percent)
                 maxIngredientPercent = percent;

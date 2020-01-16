@@ -23,21 +23,21 @@ public class Ingredient
     @NonNull
     private String name;
 
-    float percent;
+    double percent;
 
-    public Ingredient(int recipeId, @NonNull String name, float percent)
+    public Ingredient(int recipeId, @NonNull String name, double percent)
     {
         this.recipeId = recipeId;
         this.name = name;
         this.percent = percent;
     }
 
-    public float getPercent()
+    public double getPercent()
     {
         return percent;
     }
 
-    public void setPercent(float percent)
+    public void setPercent(double percent)
     {
         this.percent = percent;
     }

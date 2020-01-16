@@ -54,7 +54,7 @@
                     app:srcCompat="@drawable/ic_action_pick_image"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:contentDescription="Recipe thumbnail" />
+                    android:contentDescription="@string/recipe_thumbnail_desc" />
 
                 <TextView
                     android:id="@+id/tv_no_ingredients"

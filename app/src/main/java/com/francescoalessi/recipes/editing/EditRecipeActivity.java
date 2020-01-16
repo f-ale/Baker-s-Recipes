@@ -43,14 +43,10 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
 {
 
     private EditText mRecipeNameEditText;
-    private Button mSaveRecipeButton;
     private EditRecipeViewModel mEditRecipeViewModel;
     private LiveData<Recipe> mRecipe;
     private LiveData<List<Ingredient>> mIngredientList;
-    private FloatingActionButton mNewIngredientButton;
-    private RecyclerView mIngredientsRecyclerView;
     private TextView mNoIngredientsTextView;
-    private TextView mIngredientsLabel;
     private ImageButton mPickImageButton;
     private IngredientListAdapter mAdapter;
     private int mRecipeId;
@@ -72,20 +68,20 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         }
 
         mRecipeNameEditText = findViewById(R.id.et_recipe);
-        mSaveRecipeButton = findViewById(R.id.btn_save_recipe);
+        Button mSaveRecipeButton = findViewById(R.id.btn_save_recipe);
         mSaveRecipeButton.setOnClickListener(this);
 
-        mNewIngredientButton = findViewById(R.id.btn_new_ingredient);
+        FloatingActionButton mNewIngredientButton = findViewById(R.id.btn_new_ingredient);
         mNewIngredientButton.setOnClickListener(this);
 
         mNoIngredientsTextView = findViewById(R.id.tv_no_ingredients);
         mNoIngredientsTextView.setOnClickListener(this);
-        mIngredientsLabel = findViewById(R.id.tv_ingredients_label);
+        TextView mIngredientsLabel = findViewById(R.id.tv_ingredients_label);
 
         mPickImageButton = findViewById(R.id.btn_pick_image);
         mPickImageButton.setOnClickListener(this);
 
-        mIngredientsRecyclerView = findViewById(R.id.rv_ingredient_list);
+        RecyclerView mIngredientsRecyclerView = findViewById(R.id.rv_ingredient_list);
         mAdapter = new IngredientListAdapter(this);
         mIngredientsRecyclerView.setAdapter(mAdapter);
         mIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -275,7 +271,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     private void updateAllPercentages()
     {
         List<Ingredient> ingredients = ingredientsData;
-        float maxIngredientPercent = RecipeUtils.getMaxIngredientPercent(ingredientsData);
+        double maxIngredientPercent = RecipeUtils.getMaxIngredientPercent(ingredientsData);
         for(Ingredient ingredient : ingredients)
         {
             ingredient.setPercent(RecipeUtils.getIngredientPercent(maxIngredientPercent, ingredient.getPercent()));
@@ -331,13 +327,13 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    public void launchEditDialogForId(int ingredientId, String ingredientName, float ingredientPercent)
+    public void launchEditDialogForId(int ingredientId, String ingredientName, double ingredientPercent)
     {
         DialogFragment newFragment = new NewIngredientDialogFragment();
         Bundle arguments = new Bundle();
         arguments.putInt("INGREDIENT_ID", ingredientId);
         arguments.putString("INGREDIENT_NAME", ingredientName);
-        arguments.putFloat("INGREDIENT_PERCENT", ingredientPercent);
+        arguments.putDouble("INGREDIENT_PERCENT", ingredientPercent);
         newFragment.setArguments(arguments);
         newFragment.show(getSupportFragmentManager(), "newIngredient");
     }

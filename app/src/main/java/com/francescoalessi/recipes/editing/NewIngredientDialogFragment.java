@@ -78,7 +78,6 @@ public class NewIngredientDialogFragment extends DialogFragment
 
         Dialog dialog = builder.create();
 
-
         return builder.create();
     }
 
@@ -97,8 +96,8 @@ public class NewIngredientDialogFragment extends DialogFragment
                 if(ingredientId != -1)
                 {
                     ingredientNameEditText.setText(arguments.getString("INGREDIENT_NAME"));
-                    float percent = arguments.getFloat("INGREDIENT_PERCENT");
-                    ingredientPercentEditText.setText(RecipeUtils.getFormattedIngredientPercent(percent,null));
+                    double percent = arguments.getDouble("INGREDIENT_PERCENT");
+                    ingredientPercentEditText.setText(RecipeUtils.getFormattedIngredientPercent(percent,""));
                 }
             }
         }

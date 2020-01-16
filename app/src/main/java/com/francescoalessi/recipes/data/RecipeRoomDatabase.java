@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.francescoalessi.recipes.data.converters.UriTypeConverter;
 
-@Database(entities = {Recipe.class, Ingredient.class}, version = 4, exportSchema = false)
+@Database(entities = {Recipe.class, Ingredient.class}, version = 5, exportSchema = false)
 // TODO: set exportSchema to true later in development
 @TypeConverters({UriTypeConverter.class})
 public abstract class RecipeRoomDatabase extends RoomDatabase

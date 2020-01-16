@@ -10,9 +10,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,6 +24,8 @@ import com.francescoalessi.recipes.data.Recipe;
 import com.francescoalessi.recipes.editing.EditRecipeActivity;
 import com.francescoalessi.recipes.editing.NewRecipeDialogFragment;
 import com.francescoalessi.recipes.model.RecipeViewModel;
+import com.francescoalessi.recipes.settings.SettingsActivity;
+import com.francescoalessi.recipes.utils.RequestCodes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -32,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecipeListAdapter mAdapter;
     private RecipeViewModel mRecipeViewModel;
 
-    private FloatingActionButton mFAB;
     private Recipe mLastAddedRecipe;
     public static final String EXTRA_RECIPE_ID = "extra_recipe_id";
     public static final String EXTRA_INGREDIENT_ID = "extra_ingredient_id";
@@ -52,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mNoRecipeTextView = findViewById(R.id.tv_no_recipes);
         mNoRecipeTextView.setOnClickListener(this);
 
-        mFAB = findViewById(R.id.fab);
+        FloatingActionButton mFAB = findViewById(R.id.fab);
         mFAB.setOnClickListener(this);
 
         mRecipeViewModel = ViewModelProviders.of(this).get(RecipeViewModel.class);
@@ -97,6 +102,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
 
         new ItemTouchHelper(deleteRecipeCallback).attachToRecyclerView(mRecyclerView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
+        if (item.getItemId() == R.id.action_open_settings)
+        {
+            Context context = this;
+
+            //start intent
+            Intent intent = new Intent(context, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return false;
     }
 
     @Override

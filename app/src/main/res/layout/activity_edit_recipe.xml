@@ -111,7 +111,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_action_pick_image"
-                    android:contentDescription="Pick an Image" />
+                    android:contentDescription="@string/pick_image_button" />
 
                 <Switch
                     android:id="@+id/btn_weight_switch"
@@ -120,7 +120,7 @@
                     android:minWidth="2dp"
                     android:showText="true"
                     android:switchPadding="4dp"
-                    android:text="Use "
+                    android:text="@string/use"
                     android:textOff="%"
                     android:textOn="g"
                     app:layout_constraintEnd_toEndOf="@+id/et_recipe"

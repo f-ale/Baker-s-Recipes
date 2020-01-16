@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.francescoalessi.recipes">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,10 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/settings"></activity>
+        <activity
             android:name=".editing.EditRecipeActivity"
-            android:windowSoftInputMode="stateVisible"
-            android:launchMode="singleTop">
-        </activity>
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateVisible"></activity>
         <activity
             android:name=".ViewRecipeActivity"
             android:label="View Recipe"
@@ -24,7 +26,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.francescoalessi.recipes.MainActivity" />
         </activity>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

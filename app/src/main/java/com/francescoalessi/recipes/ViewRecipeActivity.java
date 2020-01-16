@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,15 +44,12 @@ public class ViewRecipeActivity extends AppCompatActivity implements View.OnClic
 {
     private EditRecipeViewModel mEditRecipeViewModel;
     private LiveData<Recipe> mRecipe;
-    private LiveData<List<Ingredient>> mIngredientList;
-    private RecyclerView mIngredientsRecyclerView;
     private EditText mTotalWeightEditText;
     private IngredientListAdapter mAdapter;
     private int mRecipeId;
     private boolean calculateQuantities = false;
     private ImageView mRecipeThumbnailImageView;
     private TextView mNoIngredientsTextView;
-    private TextWatcher mTotalWeightTextWatcher;
     private View mMakeRecipeCardView;
 
     private Recipe mRecipeData;
@@ -67,7 +66,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements View.OnClic
         mRecipeThumbnailImageView = findViewById(R.id.iv_recipe_thumbnail);
         mRecipeThumbnailImageView.setVisibility(View.INVISIBLE);
 
-        mIngredientsRecyclerView = findViewById(R.id.rv_ingredient_list);
+        RecyclerView mIngredientsRecyclerView = findViewById(R.id.rv_ingredient_list);
         mAdapter = new IngredientListAdapter(this, false);
         mIngredientsRecyclerView.setAdapter(mAdapter);
         mIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -93,7 +92,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements View.OnClic
 
         setupUserInterface();
 
-        mTotalWeightTextWatcher = new TextWatcher()
+        TextWatcher mTotalWeightTextWatcher = new TextWatcher()
         {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -181,7 +180,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        mIngredientList = mEditRecipeViewModel.getRecipeIngredients();
+        LiveData<List<Ingredient>> mIngredientList = mEditRecipeViewModel.getRecipeIngredients();
         mIngredientList.observe(this, new Observer<List<Ingredient>>()
         {
             @Override
@@ -276,7 +275,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements View.OnClic
                 }
                 else return false;
 
-                float percentSum = RecipeUtils.getPercentSum(ingredients);
+                double percentSum = RecipeUtils.getPercentSum(ingredients);
                 float totalWeight;
 
                 String totalWeightString = mTotalWeightEditText.getText().toString();
@@ -297,8 +296,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements View.OnClic
 
                     if (calculateQuantities)
                     {
-                        ingredientString = RecipeUtils.getFormattedIngredientWeight
-                                (percentSum, totalWeight, i.getPercent());
+                        ingredientString = RecipeUtils.getFormattedIngredientWeight(
+                                percentSum, totalWeight, i.getPercent(),
+                                RecipeUtils.getLocalizedWeightSuffix(this));
                     }
                     else
                     {
@@ -319,7 +319,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements View.OnClic
             sendIntent.setType("text/plain");
 
             Intent shareIntent = Intent.createChooser(sendIntent, getString(R.string.share_recipe));
-            startActivity(shareIntent);
+
+            if(sendIntent.resolveActivity(getPackageManager()) != null)
+                startActivity(shareIntent);
 
             return true;
         }
