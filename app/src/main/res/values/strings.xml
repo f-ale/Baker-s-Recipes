@@ -11,6 +11,7 @@
     <string name="recipe_thumbnail_desc">Recipe Thumbnail</string>
     <string name="ingredient_name_hint">Ingredient name…</string>
     <string name="ingredient_percent_hint">Ingredient percent…</string>
+    <string name="ingredient_weight_hint">Ingredient weight…</string>
     <string name="editing_recipe_title">Editing %1$s</string>
     <string name="new_recipe">New Recipe</string>
     <string name="new_ingredient">New Ingredient</string>
@@ -20,7 +21,7 @@
     <string name="no_recipe">No recipe</string>
     <string name="tap_to_add_recipe">Tap + to create a recipe.</string>
     <string name="pick_image_button">Pick Image Button</string>
-    <string name="use">Use </string>
+    <string name="use">Use Weights </string>
     <string name="save">Save</string>
     <string name="edit_ingredient_button">Edit Ingredient Button</string>
     <string name="edit_recipe">Edit Recipe</string>

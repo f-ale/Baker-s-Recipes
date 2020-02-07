@@ -125,6 +125,11 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         notifyDataSetChanged();
     }
 
+    public boolean isByWeight()
+    {
+        return byWeight;
+    }
+
     public void showPercent()
     {
         calculateQuantities = false;

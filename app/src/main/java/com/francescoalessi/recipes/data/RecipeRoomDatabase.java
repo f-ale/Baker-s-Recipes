@@ -65,14 +65,7 @@ public abstract class RecipeRoomDatabase extends RoomDatabase
         @Override
         protected Void doInBackground(final Void... params)
         {
-            Recipe word = new Recipe("Pizza al Taglio");
-            long id = mDao.insert(word);
-            mDao.insert(new Ingredient((int) id, "Flour", 100));
-            mDao.insert(new Ingredient((int) id, "Water", 55));
-            mDao.insert(new Ingredient((int) id, "Lard", 6.7f));
-            mDao.insert(new Ingredient((int) id, "Salt", 2.8f));
-            mDao.insert(new Ingredient((int) id, "White Sugar", 2.8f));
-            mDao.insert(new Ingredient((int) id, "Bread Yeast", 0.22f));
+            //pre-populate here
 
             return null;
         }

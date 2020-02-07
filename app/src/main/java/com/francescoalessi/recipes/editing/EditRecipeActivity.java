@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -25,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.francescoalessi.recipes.MainActivity;
@@ -86,7 +88,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         mIngredientsRecyclerView.setAdapter(mAdapter);
         mIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Switch mSwitch = findViewById(R.id.btn_weight_switch);
+        SwitchCompat mSwitch = findViewById(R.id.btn_weight_switch);
         mSwitch.setOnCheckedChangeListener(this);
 
         Intent intent = getIntent();
@@ -327,6 +329,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    // Launches dialog for editing ingredients
     public void launchEditDialogForId(int ingredientId, String ingredientName, double ingredientPercent)
     {
         DialogFragment newFragment = new NewIngredientDialogFragment();
@@ -334,6 +337,7 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
         arguments.putInt("INGREDIENT_ID", ingredientId);
         arguments.putString("INGREDIENT_NAME", ingredientName);
         arguments.putDouble("INGREDIENT_PERCENT", ingredientPercent);
+        arguments.putBoolean("BY_WEIGHT", mAdapter.isByWeight());
         newFragment.setArguments(arguments);
         newFragment.show(getSupportFragmentManager(), "newIngredient");
     }
@@ -344,8 +348,9 @@ public class EditRecipeActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+    public void onCheckedChanged(CompoundButton compoundButton, boolean byWeight)
     {
+        SwitchCompat switchButton = (SwitchCompat) compoundButton;
         mAdapter.switchRepresentation();
     }
 }

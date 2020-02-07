@@ -99,6 +99,12 @@ public class NewIngredientDialogFragment extends DialogFragment
                     double percent = arguments.getDouble("INGREDIENT_PERCENT");
                     ingredientPercentEditText.setText(RecipeUtils.getFormattedIngredientPercent(percent,""));
                 }
+                else
+                {
+                    boolean byWeight = arguments.getBoolean("BY_WEIGHT", false);
+                    if(byWeight)
+                        ingredientPercentEditText.setHint(R.string.ingredient_weight_hint);
+                }
             }
         }
     }

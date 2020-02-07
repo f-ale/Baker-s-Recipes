@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:importantForAutofill="noExcludeDescendants">
 
     <EditText
         android:id="@+id/et_ingredient_name"
@@ -17,6 +18,7 @@
         android:inputType="textPersonName"
         android:maxLength="30"
         android:padding="16dp"
+        android:autofillHints=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
